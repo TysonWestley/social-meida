@@ -14,35 +14,47 @@
                 <h1>UniNet</h1>
                 <p>UniNet helps you connect and share with the people in your life.</p>
             </div>
-            <form action="" class="login">
-                <div class="email_sdt">
-                    <input type="text" placeholder="Email or phone number" class="form__login">
-                </div>
-                <div class="password_login">
-                    <input type="password" placeholder="Password" class="form_password">
-                </div>
-                <div class="button_login">
-                    <button class="Log_in">Log in</button>
-                    <a href="/">Forgot password?</a>
-                    <button class="sign_in">create a new account</button>
-                </div>
-            </form>
-            <div class="register-form">
-                <form action="">
-                    <div class="name-register">
-                        <input type="text" placeholder="Surname">
-                        <input type=" text"placeholder='Name'>
-                    </div>
+            <div class="form__all">
+                <form action="" class="login_all" id="loginForm" style="display:block">
+                    <h1 class="Name-Form">Login</h1>
                     <div class="email_sdt">
-                        <input type="text" placeholder="Email or phone number" class="form__login">
+                        <input type="text" placeholder="Email or phone number" class="input__all">
                     </div>
                     <div class="password_login">
-                        <input type="password" placeholder="A new password" class="form_password">
+                        <input type="password" placeholder="Password" class="input__all">
                     </div>
-                    <button class="sign_in" >Register</button>
+                    <div class="button_login">
+                        <button class="Log_in">Log in</button>
+                        <a href="/">Forgot password?</a>
+                        <button class="sign_in" onclick="toggleForm(event)">create a new account</button>
+                    </div>
+                </form>                
+                <form action="" id="registerForm" style="display:none">
+                    <h1 class="Name-Form">Register</h1>
+                    <div class="name-register">
+                        <input type=" text"placeholder='first and last name' class="input__all" id="User">
+                        <span class="error-message"></span>
+                    </div>
+                    <div class="email_sdt">
+                        <input type="text" placeholder="Email or phone number" class="input__all" id="Email">
+                        <span class="error-message"></span>
+                    </div>
+                    <div class="password_login">
+                        <input type="password" placeholder="Password" class="input__all" id="password_00">
+                        <span class="error-message"></span>
+                    </div>
+                    <div class="check_password">
+                        <input type="password" placeholder="Confirm Password" class="input__all" id="password_11">
+                        <span class="error-message"></span>
+                    </div>
+                    <div class="button_login">
+                        <button class="sign_in" >Register</button>
+                        <button class="Log_in"  onclick="toggleForm(event)">Login</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
+    <script src="/js/formValidator.js"></script>
 </body>
 </html>
