@@ -11,31 +11,144 @@
     <div class="social-app">
         <div class="navbar">
             <h1 id="icon">UniNet</h1>
-            <ul>
+            <ul class="btn">
                 <li>
-                    <button><i class="fa-solid fa-house"></i></button>
-                    <h3>Home</h3>
+                    <button class="button-app"><i class="fa-solid fa-house"></i></button>
+                    <h3 class="word">Home</h3>
                 </li>
                 <li>
-                    <button><i class="fa-solid fa-envelope"></i></button>
-                    <h3>Messages</h3>
+                    <button class="button-app"><i class="fa-solid fa-envelope"></i></button>
+                    <h3 class="word">Messages</h3>
                 </li>
                 <li>
-                    <button><i class="fa-solid fa-user"></i></button>
-                    <h3>Profile</h3>
+                    <button class="button-app"><i class="fa-solid fa-user"></i></button>
+                    <h3 class="word">Profile</h3>
+                </li>
+                <li>
+                    <button class="button-Tweet">Tweet</button>
                 </li>
             </ul>
         </div>
-        <div class="home">
+        <div class="home" style="display:block">
             <div class="search">
-                <span><i class="fa-solid fa-magnifying-glass"></i></span>
-                <input type="text" placeholder="Search">
+                <div class="search__wrapper">
+                    <label for="iconsearch"><i class="fa-solid fa-magnifying-glass"></i></label> 
+                    <input type="text" placeholder="Search" class="searchform" id="iconsearch">
+                </div>
+                <div class="tweetBox">
+                    <form action="">
+                        <div class="tweetBox__input">
+                            <img src="/pic/facebook-cap-nhat-avatar-doi-voi-tai-khoan-khong-su-dung-anh-dai-dien-e4abd14d.jpg" alt="">
+                            <input type="text" placeholder="What's happening?">
+                        </div>
+                        <button class="tweetBox__button">Tweet</button>
+                        </div>
+                            <ul class="post">
+                                <li>
+                                    <div class="Userthis">
+                                        <img class="postUser" src="/pic/facebook-cap-nhat-avatar-doi-voi-tai-khoan-khong-su-dung-anh-dai-dien-e4abd14d.jpg" alt="">
+                                        <h3 class="postname">NameUser</h3>
+                                    </div>
+                                    <img class="postpic"src="/pic/anh-dep-hinh-nen-thien-nhien-2.jpg" alt="">
+                                    <div class="postIcon">
+                                        <i class="fa-regular fa-comment"></i>
+                                        <i class="fa-regular fa-heart"></i>
+                                        <i class="fa-solid fa-reply"></i>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="Userthis">
+                                        <img class="postUser" src="/pic/facebook-cap-nhat-avatar-doi-voi-tai-khoan-khong-su-dung-anh-dai-dien-e4abd14d.jpg" alt="">
+                                        <h3 class="postname">NameUser</h3>
+                                    </div>
+                                    <img class="postpic" src="/pic/anh-dep-hinh-nen-thien-nhien-2.jpg" alt="">
+                                    <div class="postIcon">
+                                        <i class="fa-regular fa-comment"></i>
+                                        <i class="fa-regular fa-heart"></i>
+                                        <i class="fa-solid fa-reply"></i>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="Userthis">
+                                        <img class="postUser" src="/pic/facebook-cap-nhat-avatar-doi-voi-tai-khoan-khong-su-dung-anh-dai-dien-e4abd14d.jpg" alt="">
+                                        <h3 class="postname">NameUser</h3>
+                                    </div>
+                                    <img class="postpic" src="/pic/anh-dep-hinh-nen-thien-nhien-2.jpg" alt="">
+                                    <div class="postIcon">
+                                        <i class="fa-regular fa-comment"></i>
+                                        <i class="fa-regular fa-heart"></i>
+                                        <i class="fa-solid fa-reply"></i>
+                                    </div>
+                                </li>
+                            </ul>    
+                        </div> 
+                    </form>               
+            <div class="settingAll">
+                <div class="user">
+                    <div>
+                        <h2>Kew Coder</h2>
+                        <h2>@Kew Coder</h2> 
+                    </div>
+                    <div>
+                        <button class="settings"><i class="fa-solid fa-bars"></i></button>
+                    </div>
+                </div>
+                <ul class="listFriend">
+                    <li><h1 class="Contact">Contact user</h1></li>
+                    <li class="listFriend__user">
+                        <img src="/pic/facebook-cap-nhat-avatar-doi-voi-tai-khoan-khong-su-dung-anh-dai-dien-e4abd14d.jpg" alt="" class="imguser">
+                        <h3>Tuoyo Samuel</h3>
+                    </li>
+                    <li class="listFriend__user">
+                        <img src="/pic/facebook-cap-nhat-avatar-doi-voi-tai-khoan-khong-su-dung-anh-dai-dien-e4abd14d.jpg" alt="" class="imguser">
+                        <h3>Tuoyo Samuel</h3>
+                    </li>
+                    <li class="listFriend__user">
+                        <img src="/pic/facebook-cap-nhat-avatar-doi-voi-tai-khoan-khong-su-dung-anh-dai-dien-e4abd14d.jpg" alt="" class="imguser">
+                        <h3>Tuoyo Samuel</h3>
+                    </li>
+                    <li class="listFriend__user">
+                        <img src="/pic/facebook-cap-nhat-avatar-doi-voi-tai-khoan-khong-su-dung-anh-dai-dien-e4abd14d.jpg" alt="" class="imguser">
+                        <h3>Tuoyo Samuel</h3>
+                    </li>
+                    <li class="listFriend__user">
+                        <img src="/pic/facebook-cap-nhat-avatar-doi-voi-tai-khoan-khong-su-dung-anh-dai-dien-e4abd14d.jpg" alt="" class="imguser">
+                        <h3>Tuoyo Samuel</h3>
+                    </li>
+                </ul>
             </div>
-            <div class="user">
-                <h2>Kew Coder</h2>
-                <h2>@Kew Coder</h2>              
+        </div>
+        <div class="Profile" style="display:none">
+            <div class="cover">
+                <img class="imgprofile" src="/pic/431556223_1486704845588291_4700545716883084251_n.png" alt="">
             </div>
-            <button class="settings"><i class="fa-solid fa-bars"></i></button>
+            <div class="id-section">
+                <div class="circle">
+                    <img src="/pic/431556223_1486704845588291_4700545716883084251_n.png" class="logo">                   
+                </div>
+                <div class="id">
+                    <h1>Tyson Westley</h1>
+                </div>
+                <div class="buttons">
+                    <button class="user-plus">
+                        <i class="fas fa-user-plus"></i>Add Friends
+                    </button>
+                    <button class="facebook-messenger">
+                        <i class="fab fa-facebook-messenger"></i>
+                    </button>
+                    <button class="ellipsis-h">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                </div>
+                <hr>
+                <div class="detail">
+                    <ul>
+                        <li><i class="fa fa-home"></i> lives in <b>Pakistan</b></li>
+                        <li><i class="fa fa-user"></i> Followed by 977 people</li>
+                        <li><i class="fas fa-ellipsis-h"></i> see your about infor</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </body>
