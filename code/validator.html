@@ -30,6 +30,10 @@
                     </div>
                 </form>                
                 <form action="" id="registerForm" style="display:none">
+                    <div class="showNotification" style="display:none;">
+                        <h1 id="model">Successful login</h1>
+                        <button>Login</button>
+                    </div>
                     <h1 class="Name-Form">Register</h1>
                     <div class="name-register">
                         <input type=" text"placeholder='first and last name' class="input__all" id="User">
@@ -48,7 +52,7 @@
                         <span class="error-message"></span>
                     </div>
                     <div class="button_login">
-                        <button class="sign_in" >Register</button>
+                        <button class="sign_in" id="registerForm-sign_in" >Register</button>
                         <button class="Log_in"  onclick="toggleForm(event)">Login</button>
                     </div>
                 </form>

@@ -151,3 +151,26 @@ body{
     display: flex;
     justify-content: center;
 }
+.showNotification{
+    width:400px;
+    height:330px;
+    border-radius: 10px;
+    border:1px solid red;
+    margin:0 auto;
+    display:Flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    position: absolute;
+    top: 10%;
+    left: 77%;
+    transform: translate(-50%, 50%);
+}
+.showNotification #model{
+    display: flex;
+    justify-content: center;
+}
+.showNotification button{
+    width:200px;
+    height:50px;
+    margin:0 auto;
+}

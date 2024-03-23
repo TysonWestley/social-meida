@@ -14,8 +14,8 @@ let username = document.getElementById('User');
 let email = document.getElementById('Email');
 let password = document.getElementById('password_00');
 let form = document.getElementById('registerForm');
-let formCheck=document.getElementById('password_11')
-let buttomRegister=document.querySelector('.sign_in')
+let formCheck=document.getElementById('password_11');
+let buttomRegister=document.querySelector('#registerForm-sign_in');
 function showError(input, message) {
     let parent =input.parentElement
     let error = parent.querySelector('span');
@@ -68,7 +68,6 @@ const checkLength=(input,min,max)=>{
 const checkPassword = (input, cfpassword) => {
     input.value = input.value.trim();
     cfpassword.value = cfpassword.value.trim();
-
     if (input.value !== cfpassword.value) {
         showError(cfpassword, "Mật khẩu không trùng khớp");
         return true;
@@ -76,24 +75,22 @@ const checkPassword = (input, cfpassword) => {
         return false;
     }
 };
-form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    checkEmptyInvalid([username, email, password,formCheck]);
-    checkEmail(email)
-    checkLength(username,5,10)
-    checkLength(password,6,17)
-    checkPassword(password,formCheck)
-});
 const signUp= (e) =>{    
+    e.preventDefault();
     let user= {
-        email:email.value,
-        username:username.value,
-        password:password.value,
+        email: email.value,
+        password: password.value,
+        username: username.value,
     }
     var json=JSON.stringify(user);
-    fetch("http://localhost:5500/api/resister",{
+
+    fetch("/api/resister",{
         method:"POST",
-        body:json,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+        body: json,
     }).then(
         res=>res.text()
     ).then(
@@ -102,7 +99,12 @@ const signUp= (e) =>{
         }
     )
 }
-buttomRegister.addEventListener('click',(e)=>{
-    e.preventDefault()
+form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    checkEmptyInvalid([username, email, password,formCheck]);
+    checkEmail(email)
+    checkLength(username,5,10)
+    checkLength(password,6,17)
+    checkPassword(password,formCheck)
     signUp(e)
-})
+});

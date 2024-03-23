@@ -2,12 +2,12 @@ const { Server } = require("socket.io");
 const express = require("express");
 const { PrismaClient } =require('@prisma/client') 
 const prisma = new PrismaClient()
-const bodyparser = require('body-parser')
-
 const app=express();
-
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
 var server = require("http").Server(app);
-
 const io = new Server(server, {});
 
 io.on("connection", (socket) => {
@@ -20,8 +20,6 @@ io.on("connection", (socket) => {
 
 
 app.use(express.static("public"))
-app.use(bodyparser.urlencoded({ extended: true }))
-app.use(bodyparser.json())
 app.get("/",(req,rep)=>{
     rep.sendFile(__dirname + "/code/socialmedia.html")
 })
@@ -34,8 +32,9 @@ app.get("/demo",(req,rep)=>{
 app.post("/api/resister",async (req,res)=>{
     const body=req.body
     const email=body.email
-    const username=body.username
     const password=body.password
+    const username=body.username
+    console.log(body)
     if(!username || !password||!email){
         res.status(400).send('wrong cú pháp')
         return 
@@ -43,8 +42,8 @@ app.post("/api/resister",async (req,res)=>{
     await prisma.users.create({
         data :{
             email:email,
-            username:username,
             password:password,
+            username:username,
         }
       })
     res.status(200).send('oke')
