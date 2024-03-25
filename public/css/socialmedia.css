@@ -1,0 +1,322 @@
+@import url('https://fonts.googleapis.com/css2?family=Honk&family=Roboto:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Blaka+Ink&family=Honk&family=Nabla&family=Roboto:wght@400;500;700&display=swap');
+*{
+    padding:0px;
+    margin:0px;
+    box-sizing: border-box;
+}
+body{
+    width:100%;
+    height:100%;
+    height:max-content;
+    background:linear-gradient( to bottom left,#1A2F23,#15202B );
+}
+.social-app{
+    width:100%;
+    height:100%;
+    display: flex;
+    justify-content:space-between;
+    margin-top: 30px;
+}
+.navbar{
+    position: fixed;
+    width:25%;
+    height: 100%;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+}
+.navbar #icon{
+    width: 50%;
+    height:20vh;
+    text-align: center;
+    font-family: "Honk", system-ui;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings:
+      "MORF" 15,
+      "SHLN" 50;
+    font-size: 40px;
+}
+.social-app .btn{
+    width:100%;
+    height:50vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    list-style: none;
+}
+.navbar .btn  li{
+    width:80%;
+    height: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+.btn .button-app{
+    margin-right:3px;
+    width:50px;
+    height:30px;
+    border-radius: 5px;
+    border :none;
+    outline: none;
+    font-size: 30px;
+    background-color: transparent;
+}
+.btn .word{
+    color: #F1F1F1;
+}
+.btn .button-app:hover,.btn .word:hover{
+    color: #27BE67;
+    transition: 1s;
+}
+.btn .button-Tweet{
+    width:160px;
+    height:40px;
+    border-radius: 30px;
+    color: #F1F1F1;
+    background-color: #27BE67;
+    border: 1px solid #F1F1F1;
+}
+.home{
+    width:75%;
+    height:max-content;
+    display:flex;
+    flex-direction: row;
+    margin-left:25%;
+}
+.home .search{
+    width:100%;
+    height:100%;
+    flex:1;
+}
+.search__wrapper{
+    width:70%;
+    background-color: aliceblue;
+    height: 30px;
+    display:flex;
+    border-radius: 15px;
+}
+.search__wrapper label{
+    width:30px;
+    height:100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    border:none;
+    background-color: transparent;
+}
+.search__wrapper .searchform{
+    flex:1;
+    background-color: transparent;
+    outline: none;
+    border:none;
+}
+.home form{
+    display: flex;
+    flex-direction: column;
+}
+.tweetBox img{
+    border-radius: 10px;
+    height:40px;
+}
+.tweetBox__input{
+    display: flex;
+    padding:20px 0px;
+}
+.tweetBox__input input{
+    flex:1;
+    margin-left: 20px;
+    font-size: 20px;
+    border:none;
+    outline: none;
+    background-color: transparent;
+}
+.tweetBox__button{
+    background-color: #27BE67;
+    border:none;
+    color:#F1F1F1;
+    font-weight: 900;
+    border-radius: 30px;
+    width:80px;
+    height:40px;
+    margin-left:50%;
+}
+.post {
+    width:70%;
+    height:max-content;
+    list-style: none;
+}
+.post li:hover{
+    background-color: #808080;
+    transition: 0.3s;
+}
+.post li .Userthis{
+    width:100%;
+    height:max-content;
+    display: flex;
+}
+.post .postUser{
+    border-radius: 50%;
+    width:40px;
+    height:40px;
+}
+.post li .postpic{
+    width:100%;
+    height:100%;
+    padding:0 30px;
+}
+.post .postIcon{
+    display:flex;
+    justify-content: space-around;
+
+}
+.iconC{
+    font-size: 20px;
+    background-color: #F1F1F1;
+}
+.user h2, .post .Userthis .postname{
+    text-align: center;
+    font-family: "Honk", system-ui;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings:
+      "MORF" 15,
+      "SHLN" 50;
+    font-size: 30px;
+    margin-left: 10px;
+}
+.home .settingAll{
+    width:max-content;
+    height:100%;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+}
+.settingAll .user{
+    display:flex;
+    flex-direction: row;
+}
+.home .settings{
+    width:30px;
+    height:40px;
+    margin-left:30px;
+}
+.social-app .Profile{
+    width:55%;
+    height:max-content;
+    margin:0 auto;
+}
+.cover{
+    height:160px;
+}
+.cover .imgprofile{
+    width:100%;
+    height:180px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    object-fit: cover;
+}
+.circle{
+    width:155px;
+    height:155px;
+    margin:auto;
+    border-radius: 50%;
+    border:3px solid #fff;
+    position: relative;
+    top: -90px;
+}
+.logo{
+    width:150px;
+    height:150px;
+    border-radius: 50%;
+}
+.id{
+    position: relative;
+    top: -90px;
+    text-align: center;
+}
+.buttons{
+    position: relative;
+    top:-80px;
+}
+.buttons button{
+    border-radius: 80px;
+    padding:10px;
+    border:none;
+    background-color: #bbb7a9;
+}
+.buttons .user-plus{
+    width:60%;
+    margin-left: 10px;
+}
+.buttons .facebook-messenger {
+    width:15%;
+}
+.buttons .ellipsis-h{
+    width:10%;
+}
+.buttons button:hover{
+    background-color: rgba(0,0,0,0.2);
+}
+hr{
+    position: relative;
+    top:-30px;
+    margin-top:-30px;
+}
+.detail{
+    position: relative;
+    top:-15px;
+    margin-left: 5px;
+}
+.detail ul{
+    list-style:none;
+}
+.detail ul li{
+    margin-bottom: 5px;
+    margin-left: 10px;
+}
+.messengerButton{
+    width:100%;
+    height:100vh;
+    margin-left:25px;
+}
+.boxMessenger{
+    background-color: aqua;
+    width:70%;
+    height:70%;
+    display:flex;
+    flex-direction: column;
+    justify-content:space-between ;
+    margin:0 auto;
+    border-radius: 40px;
+}
+.boxMessenger .userMessenger{
+    display:flex;
+    flex-direction: row;
+}
+.userMessenger img{
+    width:50px;
+    height:50px;
+    border-radius: 50%;
+    border:3px solid #fff;
+    margin-left:20px;
+    margin-right:10px
+}
+.boxMessenger .formMessenger{
+    width:60%;
+    height:10%;
+    padding:0 auto;
+    border:1px solid red;
+    margin-left:20px;
+    margin-bottom:10px;
+}
+
+
+
+
+

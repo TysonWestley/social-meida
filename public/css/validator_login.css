@@ -1,0 +1,185 @@
+@import url('https://fonts.googleapis.com/css2?family=Honk&family=Roboto:wght@400;500;700&display=swap');
+*{
+    padding:0px;
+    margin:0px;
+    box-sizing: border-box;
+}
+body{
+    min-height:100vh;
+    background: url("/pic/sunset-silhouettes-trees-mountains-generative-ai.jpg") no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+.login{
+    width:100%;
+    height:100vh;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+#formValidator_login{
+    width:100%;
+    height: max-content;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+#formValidator_login .introduce_login{
+    font-family: "Honk", system-ui;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings:
+      "MORF" 15,
+      "SHLN" 50;
+
+}
+@keyframes slideInleft{
+    from{
+        transform: translateX(-400px);
+    }
+    to{
+        transform: translateX(0);
+    }
+}
+.introduce_login h1{
+    font-size: 100px ;
+}
+.introduce_login p{
+    font-size: 30px ;
+    animation-name:slideInleft;
+    animation-duration: 5s;
+    animation-timing-function: ease-in-out;
+    animation-delay:0s;
+    animation-iteration-count: infinite;
+}
+
+#formValidator_login form{
+    width:500px;
+    height:max-content;
+    padding:40px;
+    border:2px solid #fff;
+    border-radius: 8%;
+    background: linear-gradient(to bottom left, #30AEF5,#3F64CE,#8D58B8,#2BD364,#0009E9);
+}
+.form__all .Name-Form , .form__all .Name-Form {
+    font-family: "Honk", system-ui;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings:
+      "MORF" 15,
+      "SHLN" 50;
+    font-size: 40px;
+    text-align: center;
+}
+.input__all{
+    margin:10px;
+    width: 400px;
+    padding:20px;
+    height: 60px;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 40px;
+    font-size: 20px;
+    font-weight: bolder;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+}
+.input__all:focus{
+    color:#fff;
+    padding-left:20px;
+    transform: translateY(-7px);
+    transform: translateX(-20px);
+}
+.button_login{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+}
+.button_login .Log_in{
+    width:200px;
+    height: 50px;
+    margin-top:20px;
+    background: linear-gradient(to bottom, #E91E63, #C2185B);
+    color: #fff;
+    border-radius: 40px;
+    font: 15px bolder;
+    font-weight: bolder;
+}
+.button_login a{
+    text-decoration: none;
+    font-size: 20px;
+    margin-top:30px;
+    color: blue;
+    margin-bottom:30px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 20px;
+}
+.form__all .sign_in {
+    width: 200px;
+    height: 50px;
+    text-align: center;
+    color: #333333;
+    margin:0px auto;
+    background: linear-gradient(to bottom, #7CB342, #558B2F);
+    border-radius: 20px;
+    font: 15px bolder;
+    font-weight: bolder;
+}
+.sign_in:hover,.Log_in:hover{
+    transform: translateY(-10px);
+    transition: 1s;
+}
+.invalid input{
+    border:3px solid #f33a58;
+    transition: 1s all;
+}
+.error-message{
+    font-family: "Honk", system-ui;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings:
+      "MORF" 15,
+      "SHLN" 50;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+}
+.showNotification{
+    background-color: lightblue;
+    width:400px;
+    height:330px;
+    border-radius: 10px;
+    border:1px solid red;
+    margin:0 auto;
+    display:Flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    position: absolute;
+    top: 10%;
+    left: 77%;
+    transform: translate(-50%, 50%);
+}
+.xicon{
+    display: flex;
+    justify-content: end;
+}
+.xicon .xicon-button{
+    width:max-content;
+    height:max-content;
+    font-size: 30px;
+    font-weight: bold;
+    background-color: red;
+}
+.showNotification #model{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
