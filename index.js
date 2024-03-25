@@ -7,6 +7,14 @@ app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
+const NodeRSA = require('node-rsa');
+const key = new NodeRSA({b: 512});
+ 
+// const text = 'Hello RSA!';
+// const encrypted = key.encrypt(text, 'base64');
+// console.log('encrypted: ', encrypted);
+// const decrypted = key.decrypt(encrypted, 'utf8');
+// console.log('decrypted: ', decrypted);
 var server = require("http").Server(app);
 const io = new Server(server, {});
 
@@ -48,11 +56,36 @@ app.post("/api/resister",async (req,res)=>{
       })
     res.status(200).send('oke')
 })
+app.post('/api/login',async(req,res)=>{
+    const body=req.body
+    const email=body.email
+    const password=body.password
+    console.log(body)
+    if(!password||!email){
+        res.status(400).send('wrong cú pháp')
+        return 
+    }
+    const record =await prisma.users.findUnique({
+        where :{
+            email:email,
+            password:password,
+        }
+      })
+    if(!record){
+        res.status(404).send('not found')
+        return
+    }
+    const tokenString=`${email};${password}`
+    const encrypted = key.encrypt(tokenString, 'base64');
+    res.status(200).send(encrypted)
+})
 
 
 
 
 
-server.listen(5500, () => {
+
+
+app.listen(5500, () => {
     console.log("app running1")
 });

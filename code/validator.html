@@ -18,10 +18,10 @@
                 <form action="" class="login_all" id="loginForm" style="display:block">
                     <h1 class="Name-Form">Login</h1>
                     <div class="email_sdt">
-                        <input type="text" placeholder="Email or phone number" class="input__all">
+                        <input type="text" placeholder="Email or phone number" class="input__all" id="Email-login">
                     </div>
                     <div class="password_login">
-                        <input type="password" placeholder="Password" class="input__all">
+                        <input type="password" placeholder="Password" class="input__all" id="Password-login">
                     </div>
                     <div class="button_login">
                         <button class="Log_in">Log in</button>
@@ -31,8 +31,10 @@
                 </form>                
                 <form action="" id="registerForm" style="display:none">
                     <div class="showNotification" style="display:none;">
+                        <div class="xicon">
+                            <button class="xicon-button">X</button>
+                        </div>
                         <h1 id="model">Successful login</h1>
-                        <button>Login</button>
                     </div>
                     <h1 class="Name-Form">Register</h1>
                     <div class="name-register">

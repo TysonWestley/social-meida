@@ -16,6 +16,12 @@ let password = document.getElementById('password_00');
 let form = document.getElementById('registerForm');
 let formCheck=document.getElementById('password_11');
 let buttomRegister=document.querySelector('#registerForm-sign_in');
+let showNotification=document.querySelector('.showNotification')
+let model=document.querySelector('#model')
+let checkIcon=document.querySelector('.xicon-button')
+let loginForm = document.getElementById('loginForm');
+let emailLogin=document.getElementById('Email-login')
+let Passwordlogin=document.getElementById('Password-login')
 function showError(input, message) {
     let parent =input.parentElement
     let error = parent.querySelector('span');
@@ -92,10 +98,47 @@ const signUp= (e) =>{
           },
         body: json,
     }).then(
-        res=>res.text()
+        res=>{
+            if(res.status==200){
+                showNotification.style.display='block'
+            }
+            else{
+                model.innerText='Register Error'
+                showNotification.style.display='block'
+            }
+            checkIcon.addEventListener('click',(e)=>{
+                e.preventDefault()
+                showNotification.style.display='none'
+            })
+            return res.text()
+        }
     ).then(
         data=>{
             console.log(data)
+        }
+    )
+}
+const loginUp=()=>{
+    let user= {
+        email: emailLogin.value,
+        password: Passwordlogin.value,
+    }
+    var json=JSON.stringify(user);
+    fetch("/api/login",{
+        method:"POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+        body: json,
+    }).then(
+        res=>{
+            return res.text()
+        }
+    ).then(
+        data=>{
+            localStorage.setItem('token',data)
+            window.location.href='/'
         }
     )
 }
@@ -108,3 +151,7 @@ form.addEventListener('submit', function (e) {
     checkPassword(password,formCheck)
     signUp(e)
 });
+loginForm.addEventListener('submit',(e)=>{
+    e.preventDefault();
+    loginUp()
+})

@@ -152,6 +152,7 @@ body{
     justify-content: center;
 }
 .showNotification{
+    background-color: lightblue;
     width:400px;
     height:330px;
     border-radius: 10px;
@@ -165,12 +166,20 @@ body{
     left: 77%;
     transform: translate(-50%, 50%);
 }
+.xicon{
+    display: flex;
+    justify-content: end;
+}
+.xicon .xicon-button{
+    width:max-content;
+    height:max-content;
+    font-size: 30px;
+    font-weight: bold;
+    background-color: red;
+}
 .showNotification #model{
     display: flex;
+    flex-direction: column;
     justify-content: center;
-}
-.showNotification button{
-    width:200px;
-    height:50px;
-    margin:0 auto;
+    align-items: center;
 }
