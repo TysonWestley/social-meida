@@ -3,6 +3,9 @@ const express = require("express");
 const { PrismaClient } =require('@prisma/client') 
 const prisma = new PrismaClient()
 const app=express();
+const multer = require('multer');
+const fs = require('fs')
+const path=require('path')
 app.use(express.json());
 app.use(express.urlencoded({
   extended: true
@@ -34,9 +37,19 @@ app.get("/",(req,rep)=>{
 app.get("/validator",(req,rep)=>{
     rep.sendFile(__dirname + "/code/validator.html")
 })
-app.get("/demo",(req,rep)=>{
-    rep.sendFile(__dirname + "/code/demo.html")
+app.get('/messenger',function(req,res){
+    res.sendFile(__dirname + '/socialmedia.html');
 })
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads')
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.fieldname + '-' + Date.now())
+    }
+  })
+   
+  var upload = multer({ storage: storage })
 app.post("/api/resister",async (req,res)=>{
     const body=req.body
     const email=body.email
@@ -79,8 +92,42 @@ app.post('/api/login',async(req,res)=>{
     const encrypted = key.encrypt(tokenString, 'base64');
     res.status(200).send(encrypted)
 })
-
-
+app.post('/uploadphoto', upload.single('picture'), (req, res) => {
+    var img = fs.readFileSync(req.file.path);
+    var encode_image = img.toString('base64');
+    var finalImg = {
+      contentType: req.file.mimetype,
+      image:  new Buffer(encode_image, 'base64')
+    };
+    db.collection('quotes').insertOne(finalImg, (err, result) => {
+      console.log(result)
+  
+      if (err) return console.log(err)
+  
+      console.log('saved to database')
+      res.redirect('/')
+    })
+  })
+app.get('/photos', (req, res) => {   
+ db.collection('mycollection').find().toArray((err, result) => {
+ const imgArray= result.map(element => element._id);
+ console.log(imgArray);
+     
+ if (err) return console.log(err)
+  res.send(imgArray)
+ })
+});
+app.get('/photo/:id', (req, res) => {
+    var filename = req.params.id;
+     
+    db.collection('mycollection').findOne({'_id': ObjectId(filename) }, (err, result) => {
+      if (err) return console.log(err)
+      
+      res.contentType('image/jpeg');
+      res.send(result.image.buffer)
+    })
+  })
+  
 
 
 

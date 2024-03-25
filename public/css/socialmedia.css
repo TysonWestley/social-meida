@@ -7,18 +7,25 @@
 }
 body{
     width:100%;
+    height:100%;
     height:max-content;
     background:linear-gradient( to bottom left,#1A2F23,#15202B );
 }
 .social-app{
     width:100%;
+    height:100%;
     display: flex;
     justify-content:space-between;
     margin-top: 30px;
 }
 .navbar{
+    position: fixed;
     width:25%;
-    height: max-content;
+    height: 100%;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
 }
 .navbar #icon{
     width: 50%;
@@ -76,13 +83,17 @@ body{
 .home{
     width:75%;
     height:max-content;
+    display:flex;
+    flex-direction: row;
+    margin-left:25%;
 }
 .home .search{
-    width:50%;
+    width:100%;
     height:100%;
+    flex:1;
 }
 .search__wrapper{
-    width:100%;
+    width:70%;
     background-color: aliceblue;
     height: 30px;
     display:flex;
@@ -132,16 +143,16 @@ body{
     border-radius: 30px;
     width:80px;
     height:40px;
-    margin-left:auto;
+    margin-left:50%;
 }
 .post {
-    width:90%;
+    width:70%;
     height:max-content;
     list-style: none;
 }
 .post li:hover{
     background-color: #808080;
-    transition: 1s;
+    transition: 0.3s;
 }
 .post li .Userthis{
     width:100%;
@@ -150,8 +161,8 @@ body{
 }
 .post .postUser{
     border-radius: 50%;
-    width:20px;
-    height:20px;
+    width:40px;
+    height:40px;
 }
 .post li .postpic{
     width:100%;
@@ -161,6 +172,11 @@ body{
 .post .postIcon{
     display:flex;
     justify-content: space-around;
+
+}
+.iconC{
+    font-size: 20px;
+    background-color: #F1F1F1;
 }
 .user h2, .post .Userthis .postname{
     text-align: center;
@@ -171,21 +187,24 @@ body{
     font-variation-settings:
       "MORF" 15,
       "SHLN" 50;
-    font-size: 20px;
+    font-size: 30px;
     margin-left: 10px;
 }
 .home .settingAll{
-    width:100%;
+    width:max-content;
     height:100%;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
 }
 .settingAll .user{
-    display: flex;
+    display:flex;
     flex-direction: row;
-    align-items: end;
 }
 .home .settings{
-    width:21.36px;
-    height:20px;
+    width:30px;
+    height:40px;
+    margin-left:30px;
 }
 .social-app .Profile{
     width:55%;
@@ -264,6 +283,7 @@ hr{
 .messengerButton{
     width:100%;
     height:100vh;
+    margin-left:25px;
 }
 .boxMessenger{
     background-color: aqua;

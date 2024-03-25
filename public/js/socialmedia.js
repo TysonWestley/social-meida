@@ -4,7 +4,7 @@ const messageContent = document.querySelector('.messengerButton');
 const profileContent = document.querySelector('.Profile');
 const content1=(e)=>{
     e.preventDefault()
-    homeContent.style.display='block'
+    homeContent.style.display='flex'
     messageContent.style.display='none'
     profileContent.style.display = 'none';
 }
@@ -25,5 +25,4 @@ const imgAvarter=document.querySelector('.logo')
 const inputImage=document.querySelector('#inputImg')
 function imgUpload(){
     inputImage.click()
-
 }

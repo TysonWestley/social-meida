@@ -29,11 +29,11 @@
                 </li>
             </ul>
         </div>
-        <div class="home" style="display:block" >
+        <div class="home" >
             <div class="search">
                 <div class="search__wrapper">
-                    <label for="iconsearch"><i class="fa-solid fa-magnifying-glass"></i></label> 
-                    <input type="text" placeholder="Search" class="searchform" id="iconsearch">
+                        <label for="iconsearch"><i class="fa-solid fa-magnifying-glass"></i></label> 
+                        <input type="text" placeholder="Search" class="searchform" id="iconsearch">
                 </div>
                 <div class="tweetBox">
                     <form action="">
@@ -51,9 +51,9 @@
                                     </div>
                                     <img class="postpic"src="/pic/anh-dep-hinh-nen-thien-nhien-2.jpg" alt="">
                                     <div class="postIcon">
-                                        <i class="fa-regular fa-comment"></i>
-                                        <i class="fa-regular fa-heart"></i>
-                                        <i class="fa-solid fa-reply"></i>
+                                        <i class="fa-regular fa-comment iconC" ></i>
+                                        <i class="fa-regular fa-heart iconC" ></i>
+                                        <i class="fa-solid fa-reply iconC" ></i>
                                     </div>
                                 </li>
                                 <li>
@@ -63,9 +63,9 @@
                                     </div>
                                     <img class="postpic" src="/pic/anh-dep-hinh-nen-thien-nhien-2.jpg" alt="">
                                     <div class="postIcon">
-                                        <i class="fa-regular fa-comment"></i>
-                                        <i class="fa-regular fa-heart"></i>
-                                        <i class="fa-solid fa-reply"></i>
+                                        <i class="fa-regular fa-comment iconC" ></i>
+                                        <i class="fa-regular fa-heart iconC" ></i>
+                                        <i class="fa-solid fa-reply iconC" ></i>
                                     </div>
                                 </li>
                                 <li>
@@ -75,26 +75,27 @@
                                     </div>
                                     <img class="postpic" src="/pic/anh-dep-hinh-nen-thien-nhien-2.jpg" alt="">
                                     <div class="postIcon">
-                                        <i class="fa-regular fa-comment"></i>
-                                        <i class="fa-regular fa-heart"></i>
-                                        <i class="fa-solid fa-reply"></i>
+                                        <i class="fa-regular fa-comment iconC" ></i>
+                                        <i class="fa-regular fa-heart iconC" ></i>
+                                        <i class="fa-solid fa-reply iconC" ></i>
                                     </div>
                                 </li>
                             </ul>    
                         </div> 
                     </form>
-                </div>               
+                </div> 
+            </div>
             <div class="settingAll">
                 <div class="user">
                     <div>
                         <h2>Kew Coder</h2>
-                        <h2>@Kew Coder</h2> 
+                     </div>
+                    <div>            
+                       <button class="settings"><i class="fa-solid fa-bars"></i></button>
                     </div>
-                    <div>
-                        <button class="settings"><i class="fa-solid fa-bars"></i></button>
-                    </div>
-                </div>
+                </div>   
             </div>
+        </div>           
         <div class="messengerButton" style="display:none"  >
             <div class="boxMessenger">
                 <div class="userMessenger">
@@ -146,7 +147,7 @@
     </div>
     <script src="/js/socialmedia.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script>
+    <!-- <script>
         const socket = io();
         const chatForm=document.querySelector("#chatformAll")
         const chatMes=document.querySelector("#chat-mess")
@@ -162,6 +163,6 @@
             const messenger=chatMes.value
             socket.emit('hello',{messenger:messenger})
         })
-    </script>
+    </script> -->
 </body>
 </html>
