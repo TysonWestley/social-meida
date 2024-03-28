@@ -103,14 +103,7 @@ app.post("/uploadphoto", upload.single("picture"), (req, res) => {
   };
 
   console.log(finalImg)
-  // db.collection("quotes").insertOne(finalImg, (err, result) => {
-  //   console.log(result);
 
-  //   if (err) return console.log(err);
-
-  //   console.log("saved to database");
-  //   res.redirect("/");
-  // });
 });
 
 app.get("/photos", (req, res) => {
