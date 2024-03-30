@@ -22,6 +22,7 @@ let checkIcon=document.querySelector('.xicon-button')
 let loginForm = document.getElementById('loginForm');
 let emailLogin=document.getElementById('Email-login')
 let Passwordlogin=document.getElementById('Password-login')
+let nameUser=document.querySelector('.user-id')
 function showError(input, message) {
     let parent =input.parentElement
     let error = parent.querySelector('span');

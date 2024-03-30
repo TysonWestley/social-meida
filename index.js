@@ -136,7 +136,29 @@ if(record.password == password) {
 }
 
   console.log(finalImg)
+
 });
+//api getname
+app.post("/api/getname") ,async (req,res)=>{
+  const token = req.query.token;
+  if(!token) {
+    res.status(401).send('token missing')
+    return
+  }
+  const decrypted = key.decrypt(token, 'utf8');
+  let parts = decrypted.split(';');
+  const email = parts[0]
+  const password = parts[1]
+  const record = await prisma.users.findUnique({
+    where: {
+        email: email 
+    },
+    select: {
+        username: true,
+    }
+});
+
+}
 app.listen(5500, () => {
   console.log("app running1");
 });

@@ -24,6 +24,10 @@
                     <button class="button-app"><i class="fa-solid fa-user"></i></button>
                     <h3 class="word" id="home3" onclick="content3(event)">Profile</h3>
                 </li>
+                <li id="button-app-5">
+                    <i class="fa-solid fa-graduation-cap button-app"></i>
+                    <h3 class="word" id="home5" onclick="content5(event)">FlashCard</h3>
+                </li>
                 <li id="button-app-4">
                     <button class="button-Tweet">Tweet</button>
                 </li>
@@ -151,8 +155,46 @@
                 </div>
             </div>
         </div>
+        <div class="flashCard" style="display:none;">
+            <div class="content">
+                <div class="add-flashcard-con">
+                  <button id="add-flashcard">Add Flashcard</button>
+                </div>
+                <!-- Display Card of Question And Answers Here -->
+                <div id="card-con">
+                  <div class="card-list-container"></div>
+                </div>
+              </div>
+              <!-- Input form for users to fill question and answer -->
+              <div class="question-container hide" id="add-question-card">
+                <h2>Add Flashcard</h2>
+                <div class="wrapper">
+                  <!-- Error message -->
+                  <div class="error-con">
+                    <span class="hide" id="error">Input fields cannot be empty!</span>
+                  </div>
+                  <!-- Close Button -->
+                  <i class="fa-solid fa-xmark" id="close-btn"></i>
+                </div>
+                <label for="question">Question:</label>
+                <textarea
+                  class="input"
+                  id="question"
+                  placeholder="Type the question here..."
+                  rows="2"
+                ></textarea>
+                <label for="answer">Answer:</label>
+                <textarea
+                  class="input"
+                  id="answer"
+                  rows="4"
+                  placeholder="Type the answer here..."
+                ></textarea>
+                <button id="save-btn">Save</button>
+            </div>
+        </div>
     </div>
-    <script src="/js/socialmedia.js"></script>
+    <script src="js/socialmedia.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <!-- <script>
         const socket = io();
