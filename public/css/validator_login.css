@@ -183,3 +183,59 @@ body{
     justify-content: center;
     align-items: center;
 }
+/* responsive */
+
+@media only screen and (max-width: 768px) {
+    .introduce_login {
+        text-align: center;
+    }
+    .introduce_login h1 {
+        font-size: 60px;
+    }
+    .introduce_login p {
+        font-size: 20px;
+    }
+    #formValidator_login {
+        flex-direction: column;
+    }
+    #formValidator_login form {
+        width: 90%;
+    }
+    .input__all {
+        width: 100%;
+    }
+    .button_login {
+        flex-direction: column;
+        align-items: center;
+    }
+    .button_login button {
+        width: 100%;
+    }
+    .showNotification {
+        width: 90%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .introduce_login h1 {
+        font-size: 40px;
+    }
+    .introduce_login p {
+        font-size: 16px;
+    }
+    #formValidator_login form {
+        padding: 20px;
+    }
+    .input__all {
+        padding: 10px;
+        font-size: 16px;
+    }
+    .button_login button {
+        font-size: 14px;
+    }
+    .showNotification {
+        width: 90%;
+    }
+}

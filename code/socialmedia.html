@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html>  
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -36,8 +36,8 @@
         <div class="home" >
             <div class="search">
                 <div class="search__wrapper">
-                        <label for="iconsearch"><i class="fa-solid fa-magnifying-glass"></i></label> 
-                        <input type="text" placeholder="Search" class="searchform" id="iconsearch">
+                    <label for="iconsearch"><i class="fa-solid fa-magnifying-glass"></i></label> 
+                    <input type="text" placeholder="Search" class="searchform" id="iconsearch">
                 </div>
                 <div class="tweetBox">
                     <form action="">
@@ -45,6 +45,7 @@
                             <img src="/pic/facebook-cap-nhat-avatar-doi-voi-tai-khoan-khong-su-dung-anh-dai-dien-e4abd14d.jpg" alt="">
                             <input type="text" placeholder="What's happening?">
                         </div>
+                        <span class="searchResult">zpttttttt</span>
                         <button class="tweetBox__button">Tweet</button>
                         <div>
                             <ul class="post">
@@ -55,9 +56,14 @@
                                     </div>
                                     <img class="postpic"src="/pic/anh-dep-hinh-nen-thien-nhien-2.jpg" alt="">
                                     <div class="postIcon">
-                                        <i class="fa-regular fa-comment iconC" ></i>
-                                        <i class="fa-regular fa-heart iconC" ></i>
-                                        <i class="fa-solid fa-reply iconC" ></i>
+                                        <div>
+                                            <i class="fa-regular fa-heart iconC" onclick="loveButton(event)"></i>
+                                            <span class="numberIcon">0</span>
+                                        </div>
+                                        <div>
+                                            <i class="fa-solid fa-thumbs-down iconC" onclick="dislikeButton(event)"></i>
+                                            <span class="dislike">0</span>
+                                        </div>
                                     </div>
                                 </li>
                                 <li>
@@ -67,9 +73,14 @@
                                     </div>
                                     <img class="postpic" src="/pic/anh-dep-hinh-nen-thien-nhien-2.jpg" alt="">
                                     <div class="postIcon">
-                                        <i class="fa-regular fa-comment iconC" ></i>
-                                        <i class="fa-regular fa-heart iconC" ></i>
-                                        <i class="fa-solid fa-reply iconC" ></i>
+                                        <div>
+                                            <i class="fa-regular fa-heart iconC" onclick="loveButton(event)"></i>
+                                            <span class="numberIcon">0</span>
+                                        </div>
+                                        <div>
+                                            <i class="fa-solid fa-thumbs-down iconC" onclick="dislikeButton(event)"></i>
+                                            <span class="dislike">0</span>
+                                        </div>
                                     </div>
                                 </li>
                                 <li>
@@ -79,9 +90,14 @@
                                     </div>
                                     <img class="postpic" src="/pic/anh-dep-hinh-nen-thien-nhien-2.jpg" alt="">
                                     <div class="postIcon">
-                                        <i class="fa-regular fa-comment iconC" ></i>
-                                        <i class="fa-regular fa-heart iconC" ></i>
-                                        <i class="fa-solid fa-reply iconC" ></i>
+                                        <div>
+                                            <i class="fa-regular fa-heart iconC" onclick="loveButton(event)"></i>
+                                            <span class="numberIcon">0</span>
+                                        </div>
+                                        <div>
+                                            <i class="fa-solid fa-thumbs-down iconC" onclick="dislikeButton(event)"></i>
+                                            <span class="dislike">0</span>
+                                        </div>
                                     </div>
                                 </li>
                             </ul>    
@@ -94,9 +110,11 @@
                     <div>
                         <h2>Kew Coder</h2>
                      </div>
-                    <div>            
+                    <div class="dropdown">            
                        <button class="settings"><i class="fa-solid fa-bars"></i></button>
-                       <button class="bell-rings"><i class="fa-solid fa-bell"></i></button>
+                        <div class="dropdown-content">
+                            <a href="#">Change Password </a>
+                       </div>
                     </div>
                 </div>   
             </div>
@@ -135,27 +153,19 @@
                     <h1 class="user-id">Tyson Westley</h1>
                 </div>
                 <div class="buttons">
-                    <button class="user-plus">
-                        <i class="fas fa-user-plus"></i>Add Friends
-                    </button>
-                    <button class="facebook-messenger">
-                        <i class="fab fa-facebook-messenger"></i>
+                    <button class="user-plus" onclick="follow(event)">
+                        <i class="fas fa-user-plus followButton"></i>follow
                     </button>
                     <button class="ellipsis-h">
                         <i class="fas fa-ellipsis-h"></i>
                     </button>
                 </div>
-                <hr>
-                <div class="detail">
-                    <ul>
-                        <li><i class="fa fa-home"></i> lives in <b>Pakistan</b></li>
-                        <li><i class="fa fa-user"></i> Followed by 977 people</li>
-                        <li><i class="fas fa-ellipsis-h"></i> see your about infor</li>
-                    </ul>
-                </div>
             </div>
         </div>
         <div class="flashCard" style="display:none;">
+            <div class="introduceFlashcard">
+                <h1>Welcome to the flashcard learning website</h1>
+            </div>
             <div class="content">
                 <div class="add-flashcard-con">
                   <button id="add-flashcard">Add Flashcard</button>
