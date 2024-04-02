@@ -108,19 +108,20 @@
             <div class="settingAll">
                 <div class="user">
                     <div>
-                        <h2>Kew Coder</h2>
+                        <h2 id="usernameDisplay">Kew Coder</h2>
                      </div>
                     <div class="dropdown">            
                        <button class="settings"><i class="fa-solid fa-bars"></i></button>
                         <div class="dropdown-content">
                             <a href="#">Change Password </a>
+                            <a href="/validator">Log Out</a>
                        </div>
                     </div>
                 </div>   
             </div>
         </div>           
         <div class="messengerButton">
-            <div class="boxMessenger" style="display:none">
+            <div class="boxMessenger" style="display:block">
                 <div class="userMessenger">
                     <img src="/pic/facebook-cap-nhat-avatar-doi-voi-tai-khoan-khong-su-dung-anh-dai-dien-e4abd14d.jpg" alt="">
                     <h1>Tyson</h1>
@@ -206,7 +207,7 @@
     </div>
     <script src="js/socialmedia.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <!-- <script>
+    <script>
         const socket = io();
         const chatForm=document.querySelector("#chatformAll")
         const chatMes=document.querySelector("#chat-mess")
@@ -222,6 +223,6 @@
             const messenger=chatMes.value
             socket.emit('hello',{messenger:messenger})
         })
-    </script> -->
+    </script>
 </body>
 </html>

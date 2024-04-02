@@ -119,30 +119,64 @@ const signUp= (e) =>{
         }
     )
 }
-const loginUp=()=>{
-    let user= {
-        email: emailLogin.value,
-        password: Passwordlogin.value,
-    }
-    var json=JSON.stringify(user);
-    fetch("/api/login",{
-        method:"POST",
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-        body: json,
+const loginUp = () => {
+    let user = {
+      email: emailLogin.value,
+      password: Passwordlogin.value,
+    };
+  
+    var json = JSON.stringify(user);
+    
+    fetch("/api/login", {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: json,
     }).then(
-        res=>{
-            return res.text()
-        }
+      res => {
+        return res.text();
+      }
     ).then(
-        data=>{
-            localStorage.setItem('token',data)
-            window.location.href='/'
-        }
-    )
-}
+      data => {
+        console.log(data)
+        localStorage.setItem('token', data);
+        window.location.href = '/';
+      }
+    ).catch(error => {
+      console.error('Lỗi khi đăng nhập:', error);
+    });
+  };
+//client post
+// Function để đăng bài viết
+// function postContent(content, username) {
+//     const xhr = new XMLHttpRequest();
+//     const url = '/api/post';
+  
+//     xhr.open('POST', url, true);
+//     xhr.setRequestHeader('Content-Type', 'application/json');
+//     xhr.onreadystatechange = function () {
+//       if (xhr.readyState === XMLHttpRequest.DONE) {
+//         if (xhr.status === 201) {
+//           console.log('Bài viết đã được đăng thành công');
+//         } else {
+//           console.error('Lỗi khi đăng bài viết:', xhr.responseText);
+//         }
+//       }
+//     };
+  
+//     const data = JSON.stringify({ content: content, username: username });
+//     xhr.send(data);
+//   }
+  
+//   // Function để đăng video
+  
+//   // Gọi function để đăng bài viết
+//   const content = 'Nội dung bài viết';
+//   const username = 'ID của người dùng';
+//   postContent(content, username);
+  
 form.addEventListener('submit', function (e) {
     e.preventDefault();
     checkEmptyInvalid([username, email, password,formCheck]);

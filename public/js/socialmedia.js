@@ -150,6 +150,35 @@ const disableButtons = (value) => {
     element.disabled = value;
   });
 };
+//load ten trang
+const getNameFromToken = () => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    console.error('Không có token trong localStorage');
+    return;
+  }
+  
+  fetch(`/api/getname?token=${ encodeURIComponent(token)}`, {
+    method: 'get', 
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Lỗi khi lấy tên người dùng');
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log(data) 
+    const username = data.username;
+    document.getElementById('usernameDisplay').innerText = username;
+    document.querySelector('.user-id').innerText=username;
+    console.log(username)
+  })
+  .catch(error => {
+    console.error('Lỗi:', error);
+  });
+};
+getNameFromToken();
 //profile
 let loveCount = localStorage.getItem('loveCount') || 0;
 let dislike=localStorage.getItem('dislikecount')||0;
@@ -200,7 +229,7 @@ function imgUpload(){
 
         formData.append("picture", e.target.files[0]);
         console.log(formData)
-        await fetch("/uploadphoto?token=" + localStorage.getItem("token"), {
+        await fetch("/uploadphoto?token=" + encodeURIComponent(localStorage.getItem("token")), {
             method: 'POST',
             body: formData
         })
