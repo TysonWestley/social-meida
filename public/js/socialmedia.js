@@ -219,6 +219,64 @@ const dislikeButton = (e) => {
     numberIconElement.innerText = numberIcon;
   }
 }
+function createFeed(e) {
+  e.preventDefault();
+  const token = localStorage.getItem('token');
+  const content = document.querySelector('.tweetBox__input input').value; 
+  if(content){
+    fetch(`/create_feeds?token=${encodeURIComponent(token)}`, {
+      method: "POST",
+      headers: {
+          'Content-Type': 'application/json' 
+      },
+      body: JSON.stringify({
+          content: content 
+      })
+  }).then(res => {
+      if (!res.ok) {
+          throw new Error('Network response was not ok');
+      }
+      return res.json();
+  }).then(data => {
+      console.log(data);
+      alert("Feed created successfully!");
+  }).catch(error => {
+      console.error('There was a problem with the fetch operation:', error);
+      alert("Failed to create feed. Please try again later.");
+  });
+  }
+
+}
+const showFeeds = () => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    console.error('Không có token trong localStorage');
+    return;
+  }
+  
+  fetch(`feeds?token=${ encodeURIComponent(token)}`, {
+    method: 'put', 
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Lỗi khi lấy tên người dùng');
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log(data) 
+    const username = data.username;
+    const postUl=document.querySelector('post');
+    const postname=document.querySelector('.postname').innerText=username;
+    const postpic=document.querySelector('.postpic')
+    
+    console.log("hello")
+  })
+  .catch(error => {
+    console.error('Lỗi:', error);
+  });
+};
+showFeeds();
 
 function imgUpload(){
     const imgAvarter=document.querySelector('.logo')
@@ -265,7 +323,6 @@ inputBox.addEventListener('keypress', async (e) => {
         }
     }
 });
-
 function displayUserProfile(user) {
     console.log('Thông tin người dùng:', user);
 }

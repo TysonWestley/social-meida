@@ -55,14 +55,14 @@ var storage = multer.diskStorage({
 });
 
 var upload = multer({ storage: storage });
-app.post("/api/resister", async (req, res) => {
+app.post("/api/register", async (req, res) => {
   const body = req.body;
   const email = body.email;
   const password = body.password;
   const username = body.username;
   console.log(body);
   if (!username || !password || !email) {
-    res.status(400).send("wrong cú pháp");
+    res.status(400).send("Wrong syntax");
     return;
   }
   await prisma.users.create({
@@ -72,7 +72,7 @@ app.post("/api/resister", async (req, res) => {
       username: username,
     },
   });
-  res.status(200).send("oke");
+  res.status(200).send("OK");
 });
 app.post("/api/login", async (req, res) => {
   const body = req.body;
@@ -117,7 +117,6 @@ app.post("/uploadphoto", upload.single("picture"), async (req, res) => {
     let parts = decrypted.split(';');
     const email = parts[0]
     const password = parts[1]
-
     const record = await prisma.users.findUnique({
       where: {
         email: email
@@ -136,10 +135,11 @@ app.post("/uploadphoto", upload.single("picture"), async (req, res) => {
 
     if (record.password == password) {
       console.log(prisma.images)
+      const imageString = finalImg.image.toString('base64');
       await prisma.images.create({
         data: {
-          username: username,
-          image: finalImg
+          image: imageString,
+          username: record.username
         }
       });
       console.log(finalImg);
@@ -184,6 +184,7 @@ app.get("/api/getname", async (req, res) => {
     res.status(500).send('Lỗi khi giải mã token');
   }
 });
+
 app.get("/api/searchUser", async (req, res) => {
   const { name } = req.query;
 
@@ -206,27 +207,94 @@ app.get("/api/searchUser", async (req, res) => {
   }
 });
 //feed post
-app.post("/api/post", async (req, res) => {
-  const { content, username } = req.body;
+// app.post("/api/post", async (req, res) => {
+//   const { content, username } = req.body;
 
+//   try {
+//     // Lưu thông tin bài viết vào cơ sở dữ liệu
+//     const newPost = await prisma.posts.create({
+//       data: {
+//         content: content,
+//         username: username, 
+//       },
+//     });
+
+//     res.status(201).json(newPost);
+//   } catch (error) {
+//     console.error("Lỗi khi đăng bài viết:", error);
+//     res.status(500).json({ message: "Lỗi khi đăng bài viết" });
+//   }
+// });
+
+//feed word
+app.post("/create_feeds", async (req, res) => {
+  const token = req.query.token;
+  if (!token) {
+    res.status(401).send('token missing');
+    return;
+  }
+  
   try {
-    // Lưu thông tin bài viết vào cơ sở dữ liệu
-    const newPost = await prisma.posts.create({
-      data: {
-        content: content,
-        username: username, 
+    const decrypted = privateKey.decrypt(token, 'utf8');
+    const parts = decrypted.split(';');
+    const email = parts[0];
+    const password = parts[1];
+    const user = await prisma.users.findUnique({
+      where: {
+        email: email,
+      },
+      select: {
+        username: true,
       },
     });
 
-    res.status(201).json(newPost);
+    if (!user) {
+      res.status(404).send('User not found');
+      return;
+    }
+    const content = req.body.content;
+    await prisma.feeds.create({ 
+      data: {
+          username: user.username, 
+          content: content
+      }
+    });
+
+    res.status(200).json({ username: user.username });
   } catch (error) {
-    console.error("Lỗi khi đăng bài viết:", error);
-    res.status(500).json({ message: "Lỗi khi đăng bài viết" });
+    console.error('An error occurred:', error);
+    res.status(500).send('An error occurred while processing your request');
+  }
+});
+app.get("/feeds", async (req, res) => {
+  try {
+      const feeds = await prisma.feeds.findMany();
+      res.status(200).json(feeds);
+  } catch (error) {
+      console.error('Error fetching feeds:', error);
+      res.status(500).json({ error: 'Internal server error' });
+  }
+});
+//change password
+app.put('/api/change-password', async (req, res) => {
+  const { username, currentPassword, newPassword } = req.body;
+
+  try {
+    const user = await User.findOne({ username, password: currentPassword });
+
+    if (!user) {
+      return res.status(404).json({ error: 'Người dùng không tồn tại hoặc mật khẩu không đúng.' });
+    }
+    user.password = newPassword;
+    await user.save();
+
+    return res.status(200).json({ message: 'Mật khẩu đã được thay đổi thành công.' });
+  } catch (error) {
+    console.error('Lỗi khi đổi mật khẩu:', error);
+    return res.status(500).json({ error: 'Đã xảy ra lỗi khi đổi mật khẩu.' });
   }
 });
 
-
-
 server.listen(5500, () => {
   console.log("app running1");
-});
+})

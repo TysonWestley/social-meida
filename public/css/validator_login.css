@@ -55,12 +55,19 @@ body{
 }
 
 #formValidator_login form{
-    width:500px;
-    height:max-content;
-    padding:40px;
-    border:2px solid #fff;
-    border-radius: 8%;
-    background: linear-gradient(to bottom left, #30AEF5,#3F64CE,#8D58B8,#2BD364,#0009E9);
+    position: relative;
+    display: block;
+    padding: 2.2rem;
+    max-width: 450px;
+    background: linear-gradient(14deg, rgba(2,0,36, 0.8) 0%, rgba(24, 24, 65, 0.7) 66%, 
+              rgb(20, 76, 99) 100%), radial-gradient(circle, rgba(2,0,36, 0.5) 0%, 
+              rgba(32, 15, 53, 0.2) 65%, rgba(14, 29, 28, 0.9) 100%);
+    border: 2px solid #fff;
+    -webkit-box-shadow: rgba(0,212,255) 0px 0px 50px -15px;
+    box-shadow: rgba(0,212,255) 0px 0px 50px -15px;
+    overflow: hidden;
+    z-index: +1;
+    border-radius: 40px;
 }
 .form__all .Name-Form , .form__all .Name-Form {
     font-family: "Honk", system-ui;
@@ -74,26 +81,21 @@ body{
     text-align: center;
 }
 .input__all{
-    margin:10px;
-    width: 400px;
-    padding:20px;
-    height: 60px;
-    background: transparent;
     border: none;
     outline: none;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    border-radius: 40px;
-    font-size: 20px;
-    font-weight: bolder;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
+    border-radius: 15px;
+    margin:10px;
+    width: 300px;
+    padding:20px;
+    background-color: #ccc;
+    box-shadow: inset 2px 5px 10px rgba(0,0,0,0.3);
+    transition: 300ms ease-in-out;
 }
 .input__all:focus{
-    color:#fff;
-    padding-left:20px;
-    transform: translateY(-7px);
-    transform: translateX(-20px);
+    background-color: white;
+    transform: scale(1.05);
+    box-shadow: 13px 13px 100px #969696,
+               -13px -13px 100px #ffffff;
 }
 .button_login{
     display: flex;
@@ -102,14 +104,17 @@ body{
     align-items: center;
 }
 .button_login .Log_in{
-    width:200px;
-    height: 50px;
-    margin-top:20px;
-    background: linear-gradient(to bottom, #E91E63, #C2185B);
+    width: 220px;
+    height:50px;
+    background: transparent;
     color: #fff;
-    border-radius: 40px;
-    font: 15px bolder;
-    font-weight: bolder;
+    font-size: 15px;
+    text-transform: uppercase;
+    font-weight: 600;
+    border: none;
+    perspective: 30rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.308);
 }
 .button_login a{
     text-decoration: none;
@@ -121,20 +126,45 @@ body{
     padding-bottom: 20px;
 }
 .form__all .sign_in {
-    width: 200px;
-    height: 50px;
-    text-align: center;
-    color: #333333;
-    margin:0px auto;
-    background: linear-gradient(to bottom, #7CB342, #558B2F);
-    border-radius: 20px;
-    font: 15px bolder;
-    font-weight: bolder;
+    width: 220px;
+    height:50px;
+    font-size: 15px;
+    background: transparent;
+    color: #fff;
+    font-size: 17px;
+    text-transform: uppercase;
+    font-weight: 600;
+    border: none;
+    perspective: 30rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.308);
 }
-.sign_in:hover,.Log_in:hover{
-    transform: translateY(-10px);
-    transition: 1s;
+.sign_in::before ,.Log_in::before{
+    content: '';
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 10px;
+    background: linear-gradient(320deg, rgba(0, 140, 255, 0.678), rgba(128, 0, 128, 0.308));
+    z-index: 1;
+    transition: background 3s;
 }
+.sign_in:hover::before ,.Log_in:hover::before{
+    animation: rotate 1s;
+    transition: all .5s;
+}
+@keyframes rotate {
+    0% {
+      transform: rotateY(180deg);
+    }
+  
+    100% {
+      transform: rotateY(360deg);
+    }
+  }
 .invalid input{
     border:3px solid #f33a58;
     transition: 1s all;
@@ -152,19 +182,17 @@ body{
     justify-content: center;
 }
 .showNotification{
-    background-color: lightblue;
-    width:400px;
-    height:330px;
+    background-color: rgba(255, 255, 255, 0.9); 
+    width: 380px;
+    height: 390px;
     border-radius: 10px;
-    border:1px solid red;
-    margin:0 auto;
-    display:Flex;
-    flex-direction: column;
-    justify-content: space-evenly;
+    border: 1px solid #cccccc; 
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
     position: absolute;
-    top: 10%;
-    left: 77%;
-    transform: translate(-50%, 50%);
+    left: 9px;
+    z-index: 2;
 }
 .xicon{
     display: flex;

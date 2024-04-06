@@ -82,72 +82,86 @@ const checkPassword = (input, cfpassword) => {
         return false;
     }
 };
-const signUp= (e) =>{    
+const signUp = (e) => {
     e.preventDefault();
-    let user= {
-        email: email.value,
-        password: password.value,
-        username: username.value,
-    }
-    var json=JSON.stringify(user);
+    const isValidEmail = checkEmail(email);
+    const isPasswordMatch = !checkPassword(password, formCheck);
+    const isNotEmpty = !checkEmptyInvalid([username, email, password, formCheck]);
+    const isPasswordValid = !checkLength(password, 6, 20);
 
-    fetch("/api/resister",{
-        method:"POST",
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-        body: json,
-    }).then(
-        res=>{
-            if(res.status==200){
-                showNotification.style.display='block'
-            }
-            else{
-                model.innerText='Register Error'
-                showNotification.style.display='block'
-            }
-            checkIcon.addEventListener('click',(e)=>{
-                e.preventDefault()
-                showNotification.style.display='none'
-            })
-            return res.text()
+    if (isValidEmail && isPasswordMatch && isNotEmpty && isPasswordValid) {
+        let user = {
+            email: email.value,
+            password: password.value,
+            username: username.value,
         }
-    ).then(
-        data=>{
-            console.log(data)
-        }
-    )
+        var json = JSON.stringify(user);
+
+        fetch("/api/register", {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: json,
+        }).then(
+            res => {
+                if (res.status == 200) {
+                    console.log("hello")
+                    showNotification.style.display = 'block';
+                    model.innerText = 'Registration Successful';
+                } else {
+                    model.innerText = 'Registration Error';
+                    showNotification.style.display = 'block';
+                }
+                checkIcon.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showNotification.style.display = 'none';
+                })
+                return res.text();
+            }
+        ).then(
+            data => {
+                console.log(data)
+            }
+        )
+    }
 }
+
 const loginUp = () => {
-    let user = {
-      email: emailLogin.value,
-      password: Passwordlogin.value,
-    };
-  
-    var json = JSON.stringify(user);
-    
-    fetch("/api/login", {
-      method: "POST",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: json,
-    }).then(
-      res => {
-        return res.text();
-      }
-    ).then(
-      data => {
-        console.log(data)
-        localStorage.setItem('token', data);
-        window.location.href = '/';
-      }
-    ).catch(error => {
-      console.error('Lỗi khi đăng nhập:', error);
-    });
-  };
+    const isValidEmail = checkEmail(emailLogin);
+    const isNotEmpty = !checkEmptyInvalid([emailLogin, Passwordlogin]);
+    // const isPasswordValid = !checkLength(Passwordlogin, 6, 20);
+    if (isValidEmail  && isNotEmpty ){
+        let user = {
+            email: emailLogin.value,
+            password: Passwordlogin.value,
+          };
+        
+          var json = JSON.stringify(user);
+          
+          fetch("/api/login", {
+            method: "POST",
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: json,
+          }).then(
+            res => {
+              return res.text();
+            }
+          ).then(
+            data => {
+              console.log(data)
+              localStorage.setItem('token', data);
+              window.location.href = '/';
+            }
+          ).catch(error => {
+            console.error('Lỗi khi đăng nhập:', error);
+          });
+        };
+    }
 //client post
 // Function để đăng bài viết
 // function postContent(content, username) {
