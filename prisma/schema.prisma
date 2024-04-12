@@ -10,13 +10,20 @@ datasource db {
 model feeds {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
   content  String
+  image    String
   username String
+}
+
+model imageAvartars {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  image    String
+  username String @unique
 }
 
 model images {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
   image    String
-  username String
+  username String @unique
 }
 
 model users {

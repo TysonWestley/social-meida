@@ -33,14 +33,14 @@
                 </li>
             </ul>
         </div>
-        <div class="home" >
+        <div class="home"  >
             <div class="search">
                 <div class="search__wrapper">
                     <label for="iconsearch"><i class="fa-solid fa-magnifying-glass"></i></label> 
                     <input type="text" placeholder="Search" class="searchform" id="iconsearch">
                 </div>
                 <div class="tweetBox">
-                    <form action="" onsubmit="createFeed(event)">
+                    <form action="">
                         <div class="tweetBox__input">
                             <img src="/pic/facebook-cap-nhat-avatar-doi-voi-tai-khoan-khong-su-dung-anh-dai-dien-e4abd14d.jpg" alt="">
                             <input type="text" placeholder="What's happening?">
@@ -105,7 +105,6 @@
                             </ul>    
                         </div> 
                     </form>
-                    </form>
                 </div> 
             </div>
             <div class="settingAll">
@@ -116,13 +115,23 @@
                     <div class="dropdown">            
                        <button class="settings"><i class="fa-solid fa-bars"></i></button>
                         <div class="dropdown-content">
-                            <a href="#">Change Password </a>
+                            <a  class="changePass" onclick="changepass(event)">Change Password </a>
                             <a href="/validator">Log Out</a>
                        </div>
                     </div>
                 </div>   
             </div>
-        </div>           
+        </div>   
+        <div class="changePassword" style="display:none">
+            <div class="subscribe">
+                <p>Change Password</p>
+                <i class="fa-solid fa-xmark"  id="tick" onclick="tick(event)"></i>
+                <input placeholder="new password" class="subscribe-input" name="email" type="password">
+                <br>
+                <div class="submit-btn" onclick="changePasswordApi(event)">SUBMIT</div>
+                <span class="NotificationOl"></span>
+            </div>               
+        </div>     
         <div class="messengerButton">
             <div class="boxMessenger">
                 <div class="userMessenger">
@@ -138,7 +147,8 @@
         </div>        
         <div class="Profile" style="display:none">
             <div class="cover">
-                <img class="imgprofile" src="/pic/431556223_1486704845588291_4700545716883084251_n.png" alt="">
+                <input type="file" name="myFile" style="display:none" id="inputCover" accept=".png,.jpg,.jpeg"/>
+                <img class="imgprofile" onclick="uploadAvartar()" src="/pic/431556223_1486704845588291_4700545716883084251_n.png" alt="">
             </div>
             <div class="id-section">
                 <div class="circle">
@@ -203,13 +213,11 @@
     <script src="js/socialmedia.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-
         const socket = io();
         const name = document.querySelector('#usernameDisplay');
         const chatForm = document.querySelector("#chatformAll");
         const chatMes = document.querySelector("#chat-mess");
         const messengerList = document.querySelector("#messenger");
-
         socket.on('messenger', data => {
            const li = document.createElement("li");
            li.innerText = `${data.name}: ${data.messenger}`;

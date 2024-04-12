@@ -31,7 +31,7 @@ const io = new Server(server, {});
 io.on("connection", (socket) => {
   console.log("people are connection");
   socket.on("hello", (data) => {
-    console.log({ data });
+    // console.log({ data });
     io.emit("messenger", data);
   });
 });
@@ -60,7 +60,7 @@ app.post("/api/register", async (req, res) => {
   const email = body.email;
   const password = body.password;
   const username = body.username;
-  console.log(body);
+  // console.log(body);
   if (!username || !password || !email) {
     res.status(400).send("Wrong syntax");
     return;
@@ -78,7 +78,7 @@ app.post("/api/login", async (req, res) => {
   const body = req.body;
   const email = body.email;
   const password = body.password;
-  console.log(body);
+  // console.log(body);
   if (!password || !email) {
     res.status(400).send("wrong cú pháp");
     return;
@@ -100,59 +100,191 @@ app.post("/api/login", async (req, res) => {
 
 app.post("/uploadphoto", upload.single("picture"), async (req, res) => {
   const token = req.query.token;
+  console.log(token)
   if (!token) {
-    res.status(401).send('Token missing');
-    return;
+    return res.status(401).send('Token missing');
   }
 
   try {
     const decrypted = privateKey.decrypt(token, 'utf8');
-
     const img = fs.readFileSync(req.file.path);
     const encode_image = img.toString("base64");
     const finalImg = {
       contentType: req.file.mimetype,
       image: Buffer.from(encode_image, "base64"),
     };
-    let parts = decrypted.split(';');
-    const email = parts[0]
-    const password = parts[1]
-    const record = await prisma.users.findUnique({
-      where: {
-        email: email
-      },
-      select: {
-        email: true,
-        username: true,
-        password: true
-      }
+    const parts = decrypted.split(';');
+    const email = parts[0];
+    const password = parts[1];
+    console.log(password)
+    const user = await prisma.users.findUnique({
+      where: { email: email },
+      select: { email: true, username: true, password: true }
+    });
+    if (!user) {
+      return res.status(401).send('Unauthorized');
+    }
+    if (user.password !== password) {
+      return res.status(401).send('Unauthorized');
+    }
+
+    const existingImage = await prisma.images.findUnique({
+      where: { username: user.username }
     });
 
-    if (!record) {
-      res.status(401).send('Unauthorized');
-      return;
-    }
-
-    if (record.password == password) {
-      console.log(prisma.images)
-      const imageString = finalImg.image.toString('base64');
+    if (existingImage) {
+      await prisma.images.update({
+        where: { username: user.username },
+        data: { image: finalImg.image.toString('base64') }
+      });
+    } else {
       await prisma.images.create({
         data: {
-          image: imageString,
-          username: record.username
+          image: finalImg.image.toString('base64'),
+          username: user.username
         }
       });
-      console.log(finalImg);
-    } else {
+    }
+    console.log(finalImg);
+    return res.status(200).send("Upload successful");
+  } catch (error) {
+    console.error('Error during decryption:', error);
+    return res.status(500).send('Error during decryption: ' + error.message);
+  }
+});
+app.post("/uploadAvartar", upload.single("picture"), async (req, res) => {
+  const token = req.query.token;
+  console.log(token)
+  if (!token) {
+    return res.status(401).send('Token missing');
+  }
+  try {
+    const decrypted = privateKey.decrypt(token, 'utf8');
+    const img = fs.readFileSync(req.file.path);
+    const encode_image = img.toString("base64");
+    const finalImg = {
+      contentType: req.file.mimetype,
+      image: Buffer.from(encode_image, "base64"),
+    };
+    const parts = decrypted.split(';');
+    const email = parts[0];
+    const password = parts[1];
+    const user = await prisma.users.findUnique({
+      where: { email: email },
+      select: { email: true, username: true, password: true }
+    });
+    if (!user) {
+      return res.status(401).send('Unauthorized');
+    }
+    if (user.password !== password) {
+      return res.status(401).send('Unauthorized');
     }
 
-    res.status(200).send("Upload successful");
+    const existingImage = await prisma.imageAvartars.findUnique({
+      where: { username: user.username }
+    });
+
+    if (existingImage) {
+      await prisma.imageAvartars.update({
+        where: { username: user.username },
+        data: { image: finalImg.image.toString('base64') }
+      });
+    } else {
+      await prisma.imageAvartars.create({
+        data: {
+          image: finalImg.image.toString('base64'),
+          username: user.username
+        }
+      });
+    }
+    console.log(finalImg);
+    return res.status(200).send("Upload successful");
+  } catch (error) {
+    console.error('Error during decryption:', error);
+    return res.status(500).send('Error during decryption: ' + error.message);
+  }
+});
+//api getImg
+app.get("/api/getImg", async (req, res) => {
+  const token = req.query.token;
+  if (!token) {
+    res.status(401).send('Token is missing');
+    return;
+  }
+  try {
+    const decrypted = privateKey.decrypt(token, 'utf8');
+    const parts = decrypted.split(';');
+    const email = parts[0];
+    const user = await prisma.users.findUnique({
+      where: {
+        email:email
+      },
+      select: {
+        username: true
+      }
+    });
+    if (!user) {
+      res.status(404).send('User not found');
+      return;
+    }
+    const img = await prisma.images.findUnique({
+      where: {
+        username: user.username
+      },
+      select: {
+        image: true
+      }
+    });
+    if (!img) {
+      res.status(404).send('Image not found');
+      return;
+    }
+    res.status(200).json(img.image);
   } catch (error) {
     console.error('Error during decryption:', error);
     res.status(500).send('Error during decryption: ' + error.message);
   }
 });
-
+app.get("/api/getAvartar", async (req, res) => {
+  const token = req.query.token;
+  if (!token) {
+    res.status(401).send('Token is missing');
+    return;
+  }
+  try {
+    const decrypted = privateKey.decrypt(token, 'utf8');
+    const parts = decrypted.split(';');
+    const email = parts[0];
+    const user = await prisma.users.findUnique({
+      where: {
+        email:email
+      },
+      select: {
+        username: true
+      }
+    });
+    if (!user) {
+      res.status(404).send('User not found');
+      return;
+    }
+    const img = await prisma.imageAvartars.findUnique({
+      where: {
+        username: user.username
+      },
+      select: {
+        image: true
+      }
+    });
+    if (!img) {
+      res.status(404).send('Image not found');
+      return;
+    }
+    res.status(200).json(img.image);
+  } catch (error) {
+    console.error('Error during decryption:', error);
+    res.status(500).send('Error during decryption: ' + error.message);
+  }
+});
 //api getname
 // Thêm endpoint API để lấy tên người dùng từ token
 app.get("/api/getname", async (req, res) => {
@@ -187,21 +319,31 @@ app.get("/api/getname", async (req, res) => {
 
 app.get("/api/searchUser", async (req, res) => {
   const { name } = req.query;
-
   try {
-    const user = await prisma.users.findUnique({
-      where: {
-        username: name
-      }
-    });
-
+    const user=await prisma.images.findUnique({
+      where:{
+        username:name
+      },
+      select:{
+        image:true,
+        username:true,
+      },
+    })
+    const userAvartar=await prisma.imageAvartars.findUnique({
+      where:{
+        username:name
+      },
+      select:{
+        image:true
+      },
+    })
     if (!user) {
       res.status(404).json({ message: "Không tìm thấy người dùng" });
       return;
     }
-
-    res.status(200).json(user);
-  } catch (error) {
+    console.log({ username: user.username, image: user.image,userAvartar:userAvartar.image })
+    res.status(200).json({ username: user.username, image: user.image,userAvartar:userAvartar.image });
+    } catch (error) {
     console.error("Lỗi khi tìm kiếm người dùng:", error);
     res.status(500).json({ message: "Lỗi khi tìm kiếm người dùng" });
   }
@@ -252,15 +394,24 @@ app.post("/create_feeds", async (req, res) => {
       res.status(404).send('User not found');
       return;
     }
+    const record=await prisma.images.findUnique({
+      where:{
+        username:user.username
+      },
+      select:{
+        image:true
+      }
+    })
     const content = req.body.content;
     await prisma.feeds.create({ 
       data: {
           username: user.username, 
-          content: content
+          content: content,
+          image:record.image
       }
     });
 
-    res.status(200).json({ username: user.username });
+    res.status(200).json({ username: user.username ,content:content,image:record.image});
   } catch (error) {
     console.error('An error occurred:', error);
     res.status(500).send('An error occurred while processing your request');
@@ -276,22 +427,43 @@ app.get("/feeds", async (req, res) => {
   }
 });
 //change password
-app.put('/api/change-password', async (req, res) => {
-  const { username, currentPassword, newPassword } = req.body;
-
+app.put ('/api/change-password', async (req, res) => {
+  const token = req.query.token;
+  if (!token) {
+    res.status(401).send('token missing');
+    return;
+  }
   try {
-    const user = await User.findOne({ username, password: currentPassword });
-
+    const decrypted = privateKey.decrypt(token, 'utf8');
+    const parts=decrypted.split(";")
+    const email=parts[0]
+    const body = req.body;
+    const newPassword = body.newPassword;
+    const user = await prisma.users.findUnique({
+      where: {
+        email:email,
+      },
+      select: {
+        username: true,
+      },
+    });
     if (!user) {
-      return res.status(404).json({ error: 'Người dùng không tồn tại hoặc mật khẩu không đúng.' });
+      return res.status(404).json({ error: 'User not found' });
     }
-    user.password = newPassword;
-    await user.save();
 
-    return res.status(200).json({ message: 'Mật khẩu đã được thay đổi thành công.' });
+    await prisma.users.update({
+      where: {
+        username: user.username,
+      },
+      data: {
+        password: newPassword,
+      },
+    });
+
+    return res.status(200).json({ message: 'Password successfully changed' });
   } catch (error) {
-    console.error('Lỗi khi đổi mật khẩu:', error);
-    return res.status(500).json({ error: 'Đã xảy ra lỗi khi đổi mật khẩu.' });
+    console.error('Error occurred while changing password:', error);
+    return res.status(500).json({ error: 'An error occurred while changing password' });
   }
 });
 

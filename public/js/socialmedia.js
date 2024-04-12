@@ -2,13 +2,21 @@ const homeContent = document.querySelector('.home');
 const messageContent = document.querySelector('.messengerButton');
 const profileContent = document.querySelector('.Profile');
 const flashContent=document.querySelector('.flashCard')
+const changePassword=document.querySelector('.changePassword')
+const changepass=(e)=>{
+  e.preventDefault()
+  changePassword.style.display='flex'
+}
+const tick=(e)=>{
+  const icontTick=document.querySelector('#tick')
+  changePassword.style.display='none'
+}
 const content1=(e)=>{
     e.preventDefault()
     homeContent.style.display='flex'
     messageContent.style.display='none'
     profileContent.style.display = 'none';
     flashContent.style.display='none'
-
 }
 const content2=(e)=>{
     e.preventDefault()
@@ -51,7 +59,7 @@ addQuestion.addEventListener("click", () => {
 });
 
 //Hide Create flashcard Card
-closeBtn.addEventListener("click",(hideQuestion = () => {
+closeBtn.addEventListener("click",(hidenQuestion = () => {
     content.classList.remove("hide");
     addQuestionCard.classList.add("hide");
     if (editBool) {
@@ -238,8 +246,7 @@ function createFeed(e) {
       }
       return res.json();
   }).then(data => {
-      console.log(data);
-      alert("Feed created successfully!");
+    console.log(data)
   }).catch(error => {
       console.error('There was a problem with the fetch operation:', error);
       alert("Failed to create feed. Please try again later.");
@@ -247,82 +254,273 @@ function createFeed(e) {
   }
 
 }
-const showFeeds = () => {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    console.error('Không có token trong localStorage');
-    return;
-  }
-  
-  fetch(`feeds?token=${ encodeURIComponent(token)}`, {
-    method: 'put', 
-  })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Lỗi khi lấy tên người dùng');
+document.querySelector('.tweetBox__button').addEventListener('click', createFeed);
+document.querySelector('.tweetBox__button').addEventListener('click', showFeeds);
+async function showFeeds(e) {
+  e.preventDefault();
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('Không có token trong localStorage');
+      return;
     }
-    return response.json();
-  })
-  .then(data => {
-    console.log(data) 
-    const username = data.username;
-    const postUl=document.querySelector('post');
-    const postname=document.querySelector('.postname').innerText=username;
-    const postpic=document.querySelector('.postpic')
-    
-    console.log("hello")
-  })
-  .catch(error => {
-    console.error('Lỗi:', error);
-  });
-};
-showFeeds();
 
-function imgUpload(){
-    const imgAvarter=document.querySelector('.logo')
-    const inputImage=document.querySelector('#inputImg')
-    inputImage.click()
-    inputImage.addEventListener('change', async(e) => {
-        const formData  = new FormData();
+    const response = await fetch(`/feeds?token=${encodeURIComponent(token)}`, {
+      method: 'GET',
+    });
 
-        formData.append("picture", e.target.files[0]);
-        console.log(formData)
-        await fetch("/uploadphoto?token=" + encodeURIComponent(localStorage.getItem("token")), {
-            method: 'POST',
-            body: formData
-        })
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            imgAvarter.src = event.target.result;
-        };
-        reader.readAsDataURL(e.target.files[0]);
-    })
+    if (!response.ok) {
+      throw new Error('Failed to fetch the list of posts');
+    }
+
+    const data = await response.json();
+    const postUl = document.querySelector('.post');
+
+    postUl.insertAdjacentHTML('afterbegin', `
+      <li class="post">
+        <div class="Userthis">
+          <img class="postUser" src="data:image/gif;base64,${data[data.length - 1].image}" alt="Avatar">
+          <h3 class="postname">${data[data.length - 1].username}</h3>
+        </div>
+        <p class="postcontent">${data[data.length - 1].content}</p>
+        <div class="postIcon">
+          <div>
+              <i class="fa-regular fa-heart iconC" onclick="loveButton(event)"></i>
+              <span class="numberIcon">0</span>
+          </div>
+          <div>
+              <i class="fa-solid fa-thumbs-down iconC" onclick="dislikeButton(event)"></i>
+              <span class="dislike">0</span>
+          </div>
+        </div>
+      </li>
+    `);
+  } catch (error) {
+    console.error('Error:', error);
   }
+}
+
+async function loadAndDisplayPosts() {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('Không có token trong localStorage');
+      return;
+    }
+
+    const response = await fetch(`/feeds?token=${encodeURIComponent(token)}`, {
+      method: 'GET',
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch the list of posts');
+    }
+    const data = await response.json();
+    const postUl = document.querySelector('.post');
+    data.forEach(element => {
+      const li = document.createElement('li');
+      li.classList.add('post');
+      li.innerHTML = `
+        <div class="Userthis">
+          <img class="postUser" src="${element.image}" alt="Avatar">
+          <h3 class="postname">${element.username}</h3>
+        </div>
+        <p class="postcontent">${element.content}</p>
+        <div class="postIcon">
+        <div>
+            <i class="fa-regular fa-heart iconC" onclick="loveButton(event)"></i>
+            <span class="numberIcon">0</span>
+        </div>
+        <div>
+            <i class="fa-solid fa-thumbs-down iconC" onclick="dislikeButton(event)"></i>
+            <span class="dislike">0</span>
+        </div>
+      </div>
+      `;
+      const firstChild = postUl.firstChild;
+      postUl.insertBefore(li, firstChild);
+    });
+
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+document.addEventListener('DOMContentLoaded', loadAndDisplayPosts);
+async function showAvartar64() {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('Token not found in localStorage');
+      return;
+    }
+    const response = await fetch(`/api/getImg?token=${encodeURIComponent(token)}`, {
+      method: 'GET',
+    });
+    if (!response.ok) {
+      if (response.status === 404) {
+        console.error('Image not found');
+        return;
+      }
+      throw new Error(`Failed to fetch the image: ${response.status} - ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    if (!data?.length) {
+      throw new Error('Image data not found in the response');
+    }
+
+    const imageElement = document.querySelector('.logo');
+    const imagesTwitet=document.querySelector('.tweetBox__input img')
+    imageElement.src = `data:image/gif;base64, ${data}`;
+    imagesTwitet.src=`data:image/gif;base64, ${data}`
+  } catch (error) {
+    console.error('Error fetching and displaying image:', error);
+    console.error('Error stack:', error.stack);
+  }
+}
+document.addEventListener('DOMContentLoaded', showAvartar64);
+async function showAvartar65() {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('Token not found in localStorage');
+      return;
+    }
+    const response = await fetch(`/api/getAvartar?token=${encodeURIComponent(token)}`, {
+      method: 'GET',
+    });
+    if (!response.ok) {
+      if (response.status === 404) {
+        console.error('Image not found');
+        return;
+      }
+      throw new Error(`Failed to fetch the image: ${response.status} - ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    if (!data?.length) {
+      throw new Error('Image data not found in the response');
+    }
+
+    const imageElement = document.querySelector('.imgprofile');
+    imageElement.src = `data:image/gif;base64, ${data}`;
+  } catch (error) {
+    console.error('Error fetching and displaying image:', error);
+    console.error('Error stack:', error.stack);
+  }
+}
+document.addEventListener('DOMContentLoaded', showAvartar65);
+function imgUpload() {
+  const imgAvarter = document.querySelector('.logo');
+  const inputImage = document.querySelector('#inputImg');
+  inputImage.addEventListener('change', async (e) => {
+    const formData = new FormData();
+    formData.append('picture', e.target.files[0]);
+
+    const response = await fetch(`/uploadphoto?token=${encodeURIComponent(localStorage.getItem('token'))}`, {
+      method: 'POST',
+      body: formData,
+    });
+    console.log(response.ok)
+    if (!response.ok) {
+      console.error(`Failed to upload photo: ${response.status} - ${response.statusText}`);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      imgAvarter.src = event.target.result;
+    };
+    reader.readAsDataURL(e.target.files[0]);
+  });
+  inputImage.click();
+}
+function uploadAvartar() {
+  const imgAvarter = document.querySelector('.imgprofile');
+  const inputCover = document.querySelector('#inputCover');
+  inputCover.addEventListener('change', async (e) => {
+    const formData = new FormData();
+    formData.append('picture', e.target.files[0]);
+
+    const response = await fetch(`/uploadAvartar?token=${encodeURIComponent(localStorage.getItem('token'))}`, {
+      method: 'POST',
+      body: formData,
+    });
+    console.log(response.ok)
+    if (!response.ok) {
+      console.error(`Failed to upload photo: ${response.status} - ${response.statusText}`);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      imgAvarter.src = event.target.result;
+    };
+    reader.readAsDataURL(e.target.files[0]);
+  });
+  inputCover.click();
+}
 const inputBox = document.querySelector('.tweetBox__input input');
 const searchResult=document.querySelector('.searchResult')
-inputBox.addEventListener('keypress', async (e) => {
-    if (e.key === 'Enter') {
-        const username = e.target.value.trim();
-        if (username !== '') {
-            try {
-                const response = await fetch(`/api/searchUser?name=${username}`);
-                const data = await response.json();
-
-                if (response.ok) {
-                    displayUserProfile(data);
-                    searchResult.innerText='data'
-
-                } else {
-                    console.error('Lỗi khi tìm kiếm người dùng:', data.message);
-                    
-                  }
-            } catch (error) {
-                console.error('Lỗi khi gửi yêu cầu tìm kiếm người dùng:', error);
-
-            }
-        }
+//
+const hell = async (e) => {
+  e.preventDefault();
+  console.log("hellos")
+  if (e.key !== 'Enter') return;
+  const username = inputBox.value.trim();
+  if (!username) return;
+  try {
+    const response = await fetch(`/api/searchUser?name=${encodeURIComponent(username)}`);
+    const data = await response.json();
+    console.log(data)
+    if (!response.ok) {
+      console.error(`Error searching user: ${data.message}`);
+      return;
     }
-});
+    displayUserProfile(data);
+    searchResult.innerText = JSON.stringify(data);
+  } catch (error) {
+    console.error(`Error sending user search request: ${error}`);
+  }
+  e.target.value = '';
+}
 function displayUserProfile(user) {
     console.log('Thông tin người dùng:', user);
 }
+//change password
+const changePasswordApi = async () => {
+  const token = localStorage.getItem('token');
+  const NotificationOl = document.querySelector('.NotificationOl');
+  NotificationOl.innerText='';
+  if (!token) {
+    console.error('Token not found in localStorage');
+    NotificationOl.innerText = 'Error changing password: Token not found in localStorage';
+    return;
+  }
+
+  const passwordInput = document.querySelector(".changePassword input[type=password]");
+  const newPassword = passwordInput.value.trim();
+  if (newPassword === '') {
+    console.error('Please enter a new password');
+    NotificationOl.innerText = 'Error changing password: Please enter a new password';
+    return;
+  }
+
+  try {
+    const response = await fetch(`/api/change-password?token=${encodeURIComponent(token)}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ newPassword }),
+    }); 
+    if (!response.ok) {
+      const { error } = await response.json();
+      NotificationOl.innerText = `Error changing password: ${error}`;
+      return;
+    }
+    passwordInput.value = '';
+    NotificationOl.innerText = "Password successfully changed";
+  } catch (error) {
+    NotificationOl.innerText=`Error sending password change request: ${error}`;
+  }
+};
+

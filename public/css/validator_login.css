@@ -115,15 +115,7 @@ body{
     perspective: 30rem;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.308);
-}
-.button_login a{
-    text-decoration: none;
-    font-size: 20px;
-    margin-top:30px;
-    color: blue;
-    margin-bottom:30px;
-    border-bottom: 1px solid #333;
-    padding-bottom: 20px;
+    margin-bottom:10px;
 }
 .form__all .sign_in {
     width: 220px;

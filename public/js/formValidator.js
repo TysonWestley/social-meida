@@ -48,16 +48,18 @@ const checkEmptyInvalid = (inputList) => {
         }
     });
 }
-const checkEmail=(input)=>{
-    const emailRegex = /^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,4}$/;
-    input.value=input.value.trim()
-    if(emailRegex.test(input.value)){
-        showSuccess(input)
+const checkEmail = (input) => {
+    const emailRegex = /^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
+    const inputValue = input.value.trim();
+    const isValidEmail = emailRegex.test(inputValue);
+
+    if (!isValidEmail) {
+        showError(input, 'Email invalid'); 
+    } else {
+        showSuccess(input);
     }
-    else{
-        showError(input,'Email invalid')
-    }
-    return emailRegex.test(input.value)
+
+    return isValidEmail;
 }
 const checkLength=(input,min,max)=>{
     input.value=input.value.trim()
