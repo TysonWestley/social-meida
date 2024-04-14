@@ -1,4 +1,3 @@
-const { Server } = require("socket.io");
 const express = require("express");
 //tương tác cơ sở dữ liệu với prisma
 const { PrismaClient } = require("@prisma/client");
@@ -7,7 +6,7 @@ const app = express();
 const multer = require("multer");
 const NodeRSA = require('node-rsa');
 const fs = require('fs');
-
+const { Server } = require("socket.io");
 // Load the keys from files
 const privateKeyPem = fs.readFileSync('private.pem', 'utf8');
 const publicKeyPem = fs.readFileSync('public.pem', 'utf8');
@@ -27,11 +26,20 @@ app.use(
 // console.log('decrypted: ', decrypted);
 var server = require("http").Server(app);
 const io = new Server(server, {});
-
+io.on("connection", (client) => {
+  console.log("New client connected");
+  let room; 
+  client.on("join", (receivedRoom) => {
+    room = receivedRoom;
+    client.join(room);
+  });
+  client.on("message", (data) => {
+    io.to(room).emit("thread", data); 
+  });
+});
 io.on("connection", (socket) => {
   console.log("people are connection");
   socket.on("hello", (data) => {
-    // console.log({ data });
     io.emit("messenger", data);
   });
 });
@@ -341,7 +349,6 @@ app.get("/api/searchUser", async (req, res) => {
       res.status(404).json({ message: "Không tìm thấy người dùng" });
       return;
     }
-    console.log({ username: user.username, image: user.image,userAvartar:userAvartar.image })
     res.status(200).json({ username: user.username, image: user.image,userAvartar:userAvartar.image });
     } catch (error) {
     console.error("Lỗi khi tìm kiếm người dùng:", error);

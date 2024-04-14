@@ -28,8 +28,12 @@
                     <button class="button-app" onclick="content5(event)"><i class="fa-solid fa-graduation-cap button-app"></i></button>
                     <h3 class="word" id="home5" onclick="content5(event)">FlashCard</h3>
                 </li>
+                <li id="button-app-6">
+                    <button class="button-app" onclick="content6(event)"><i class="fa-solid fa-envelope"></i></button>
+                    <h3 class="word" id="home6" onclick="content6(event)">Community</h3>
+                </li>
                 <li id="button-app-4">
-                    <button class="button-Tweet">Tweet</button>
+                    <button class="button-Tweet">Post picture </button>
                 </li>
             </ul>
         </div>
@@ -44,9 +48,6 @@
                         <div class="tweetBox__input">
                             <img src="/pic/facebook-cap-nhat-avatar-doi-voi-tai-khoan-khong-su-dung-anh-dai-dien-e4abd14d.jpg" alt="">
                             <input type="text" placeholder="What's happening?">
-                        </div>
-                        <div>
-                            <button><i class="fa-solid fa-image"></i></button>
                         </div>
                         <button class="tweetBox__button">Tweet</button>
                         <div>
@@ -135,8 +136,10 @@
         <div class="messengerButton">
             <div class="boxMessenger">
                 <div class="userMessenger">
-                    <img src="/pic/facebook-cap-nhat-avatar-doi-voi-tai-khoan-khong-su-dung-anh-dai-dien-e4abd14d.jpg" alt="">
-                    <h1>Tyson</h1>
+                    <input type="text" id="room" placeholder="give me id room">
+                    <button id="btn-join">Join</button>
+                    <span class="error"></span>
+                    <span class="success"></span>
                 </div>
                 <ul id="messenger"></ul>
                 <form action="" id="chatformAll">
@@ -144,7 +147,19 @@
                     <button id="send-chat">send</button>
                 </form>
             </div>
-        </div>        
+        </div>  
+        <div class="CommunityChat" style="display:none">
+            <div class="boxMessenger">
+                <div class="userMessenger">
+                    <h1>Welcome to community chat</h1>
+                </div>
+                <ul id="messengerComunity"></ul>
+                <form action="" id="chatformAll2">
+                    <input type="text" id="chat-mess-comunity">
+                    <button id="send-chat-comunity">send</button>
+                </form>
+            </div>
+        </div>      
         <div class="Profile" style="display:none">
             <div class="cover">
                 <input type="file" name="myFile" style="display:none" id="inputCover" accept=".png,.jpg,.jpeg"/>
@@ -212,12 +227,12 @@
     </div>
     <script src="js/socialmedia.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/client.js"></script>
     <script>
-        const socket = io();
         const name = document.querySelector('#usernameDisplay');
-        const chatForm = document.querySelector("#chatformAll");
-        const chatMes = document.querySelector("#chat-mess");
-        const messengerList = document.querySelector("#messenger");
+        const chatForm = document.querySelector("#chatformAll2");
+        const chatMes = document.querySelector("#chat-mess-comunity");
+        const messengerList = document.querySelector("#messengerComunity");
         socket.on('messenger', data => {
            const li = document.createElement("li");
            li.innerText = `${data.name}: ${data.messenger}`;

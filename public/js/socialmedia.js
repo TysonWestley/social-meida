@@ -3,6 +3,7 @@ const messageContent = document.querySelector('.messengerButton');
 const profileContent = document.querySelector('.Profile');
 const flashContent=document.querySelector('.flashCard')
 const changePassword=document.querySelector('.changePassword')
+const CommunityChat=document.querySelector('.CommunityChat') 
 const changepass=(e)=>{
   e.preventDefault()
   changePassword.style.display='flex'
@@ -17,6 +18,7 @@ const content1=(e)=>{
     messageContent.style.display='none'
     profileContent.style.display = 'none';
     flashContent.style.display='none'
+    CommunityChat.style.display='none'
 }
 const content2=(e)=>{
     e.preventDefault()
@@ -24,6 +26,7 @@ const content2=(e)=>{
     messageContent.style.display='block'
     profileContent.style.display = 'none';
     flashContent.style.display='none'
+    CommunityChat.style.display='none'
 }
 const content3=(e)=>{
     e.preventDefault()
@@ -31,6 +34,7 @@ const content3=(e)=>{
     messageContent.style.display='none'
     profileContent.style.display = 'block';
     flashContent.style.display='none'
+    CommunityChat.style.display='none'
 }
 const content5=(e)=>{
     e.preventDefault()
@@ -38,6 +42,15 @@ const content5=(e)=>{
     homeContent.style.display='none'
     messageContent.style.display='none'
     profileContent.style.display = 'none';
+    CommunityChat.style.display='none'
+}
+const content6=(e)=>{
+  e.preventDefault();
+  CommunityChat.style.display='block'
+  flashContent.style.display='none'
+  homeContent.style.display='none'
+  messageContent.style.display='none'
+  profileContent.style.display = 'none';
 }
 //js flashcard
 const content = document.querySelector(".content");
@@ -488,6 +501,7 @@ function displayUserProfile(user) {
     console.log('Thông tin người dùng:', user);
 }
 //change password
+
 const changePasswordApi = async () => {
   const token = localStorage.getItem('token');
   const NotificationOl = document.querySelector('.NotificationOl');
