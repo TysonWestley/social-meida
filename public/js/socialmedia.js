@@ -4,6 +4,9 @@ const profileContent = document.querySelector('.Profile');
 const flashContent=document.querySelector('.flashCard')
 const changePassword=document.querySelector('.changePassword')
 const CommunityChat=document.querySelector('.CommunityChat') 
+const postcontent=document.querySelector('.post-container')
+const tick4=document.querySelector('.tick4')
+console.log(tick4)
 const changepass=(e)=>{
   e.preventDefault()
   changePassword.style.display='flex'
@@ -36,6 +39,13 @@ const content3=(e)=>{
     flashContent.style.display='none'
     CommunityChat.style.display='none'
 }
+const content4=(e)=>{
+  e.preventDefault()
+  postcontent.style.display='block'
+}
+tick4.addEventListener('click',()=>{
+  postcontent.style.display='none'
+})
 const content5=(e)=>{
     e.preventDefault()
     flashContent.style.display='block'
@@ -259,16 +269,13 @@ function createFeed(e) {
       }
       return res.json();
   }).then(data => {
-    console.log(data)
+       console.log(data)
   }).catch(error => {
       console.error('There was a problem with the fetch operation:', error);
-      alert("Failed to create feed. Please try again later.");
   });
   }
 
 }
-document.querySelector('.tweetBox__button').addEventListener('click', createFeed);
-document.querySelector('.tweetBox__button').addEventListener('click', showFeeds);
 async function showFeeds(e) {
   e.preventDefault();
   try {
@@ -312,6 +319,16 @@ async function showFeeds(e) {
     console.error('Error:', error);
   }
 }
+document.querySelector('.tweetBox__button').addEventListener('click', async (e) => {
+  e.preventDefault();
+  
+  try {
+    await createFeed(e);
+    showFeeds(e);
+  } catch (error) {
+    console.error('Error creating or showing feeds:', error);
+  }
+});
 
 async function loadAndDisplayPosts() {
   try {
@@ -335,7 +352,7 @@ async function loadAndDisplayPosts() {
       li.classList.add('post');
       li.innerHTML = `
         <div class="Userthis">
-          <img class="postUser" src="${element.image}" alt="Avatar">
+          <img class="postUser" src="data:image/gif;base64,${element.image}" alt="Avatar">
           <h3 class="postname">${element.username}</h3>
         </div>
         <p class="postcontent">${element.content}</p>
@@ -454,7 +471,6 @@ function uploadAvartar() {
   inputCover.addEventListener('change', async (e) => {
     const formData = new FormData();
     formData.append('picture', e.target.files[0]);
-
     const response = await fetch(`/uploadAvartar?token=${encodeURIComponent(localStorage.getItem('token'))}`, {
       method: 'POST',
       body: formData,
@@ -474,34 +490,179 @@ function uploadAvartar() {
   inputCover.click();
 }
 const inputBox = document.querySelector('.tweetBox__input input');
-const searchResult=document.querySelector('.searchResult')
 //
 const hell = async (e) => {
   e.preventDefault();
-  console.log("hellos")
-  if (e.key !== 'Enter') return;
-  const username = inputBox.value.trim();
-  if (!username) return;
+  if (e.key !== 'Enter') {
+    return;
+  }
+  const username = e.target.value.trim();
+  if (username === '') {
+    return;
+  }
   try {
     const response = await fetch(`/api/searchUser?name=${encodeURIComponent(username)}`);
     const data = await response.json();
-    console.log(data)
+    const userList = document.querySelector('.user-list');
     if (!response.ok) {
-      console.error(`Error searching user: ${data.message}`);
-      return;
+      const itemsHtml = `
+      <div>
+        <i class="fa-solid fa-xmark"  id="tick" onclick="tick(event)"></i>
+        <h1>Error to find user</h1>
+      </div>
+    `;
+    userList.innerHTML = itemsHtml;
+    return
     }
     displayUserProfile(data);
-    searchResult.innerText = JSON.stringify(data);
+    const itemsHtml = `
+      <div>
+        <i class="fa-solid fa-xmark"  id="tick" onclick="tick(event)"></i>
+        <h1>Information User</h1>
+        <img src="data:image/gif;base64, ${data.image}"/>
+        <img src="data:image/gif;base64, ${data.userAvartar}"/>
+        <h3>${data.username}</h3>
+      </div>
+    `;
+    userList.innerHTML = itemsHtml;
   } catch (error) {
     console.error(`Error sending user search request: ${error}`);
   }
-  e.target.value = '';
 }
 function displayUserProfile(user) {
     console.log('Thông tin người dùng:', user);
 }
-//change password
+//feed Picture
+const feedPicture = async () => {
+  const inputCoverfeed = document.querySelector('#inputCoverfeed');
+  const imgAvartar = document.querySelector(".content img");
+  const feedButton=document.querySelector('.buttonPicture')
+  feedButton.addEventListener('click',()=>{
+    inputCoverfeed.click();
+  })
+  inputCoverfeed.addEventListener('change', async () => {
+    const formData = new FormData();
+    formData.append('picture', inputCoverfeed.files[0]);
+    const token = localStorage.getItem('token');
+    const response = await fetch(`/create_feedPictures?token=${encodeURIComponent(token)}`, {
+      method: 'POST',
+      body: formData,
+    });
+    if (!response.ok) {
+      console.error(`Failed to upload photo: ${response.status} - ${response.statusText}`);
+      return;
+    }
 
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      if (imgAvartar) {
+        imgAvartar.classList.add('imageUpload');
+      }
+      imgAvartar.src = event.target.result;
+    };
+    reader.readAsDataURL(inputCoverfeed.files[0]);
+  });
+}
+async function uploadFeed(e) {
+  e.preventDefault();
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('Không có token trong localStorage');
+      return;
+    }
+
+    const response = await fetch(`/feedPictures?token=${encodeURIComponent(token)}`, {
+      method: 'GET',
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch the list of posts');
+    }
+
+    const data = await response.json();
+    const postUl = document.querySelector('.post');
+    console.log(data[data.length - 1].picture)
+    postUl.insertAdjacentHTML('afterbegin', `
+      <li class="post">
+        <div class="Userthis">
+          <img class="postUser" src="data:image/gif;base64,${data[data.length - 1].image}" alt="Avatar">
+          <h3 class="postname">${data[data.length - 1].username}</h3>
+        </div>
+        <img class="postpic" src="data:image/gif;base64,${data[data.length - 1].picture}" alt="dfdf">
+        <div class="postIcon">
+          <div>
+              <i class="fa-regular fa-heart iconC" onclick="loveButton(event)"></i>
+              <span class="numberIcon">0</span>
+          </div>
+          <div>
+              <i class="fa-solid fa-thumbs-down iconC" onclick="dislikeButton(event)"></i>
+              <span class="dislike">0</span>
+          </div>
+        </div>
+      </li>
+    `);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+async function loadAndDisplayPicture() {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('Không có token trong localStorage');
+      return;
+    }
+
+    const response = await fetch(`/feedPictures?token=${encodeURIComponent(token)}`, {
+      method: 'GET',
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch the list of posts');
+    }
+    const data = await response.json();
+    const postUl = document.querySelector('.post');
+    data.forEach(element => {
+      const li = document.createElement('li');
+      li.classList.add('post');
+      li.innerHTML = `
+        <div class="Userthis">
+        <img class="postUser" src="data:image/gif;base64,${element.image}" alt="Avatar">
+        <h3 class="postname">${element.username}</h3>
+        </div>
+        <img class="postpic" src="data:image/gif;base64,${element.picture}" alt="dfdf">
+        <div class="postIcon">
+        <div>
+            <i class="fa-regular fa-heart iconC" onclick="loveButton(event)"></i>
+            <span class="numberIcon">0</span>
+        </div>
+        <div>
+            <i class="fa-solid fa-thumbs-down iconC" onclick="dislikeButton(event)"></i>
+            <span class="dislike">0</span>
+        </div>
+      </div>
+      `;
+      const firstChild = postUl.firstChild;
+      postUl.insertBefore(li, firstChild);
+    });
+
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+document.addEventListener('DOMContentLoaded', loadAndDisplayPicture);
+document.querySelector('.feed-button').addEventListener('click', async (event) => {
+  event.preventDefault();
+  try {
+    await feedPicture(event);
+    uploadFeed(event);
+  } catch (error) {
+    console.error('Error creating or showing feeds:', error);
+  }
+});
+// document.addEventListener('DOMContentLoaded', loadAndDisplayPostss);
+//change password
 const changePasswordApi = async () => {
   const token = localStorage.getItem('token');
   const NotificationOl = document.querySelector('.NotificationOl');

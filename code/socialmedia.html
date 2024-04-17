@@ -33,7 +33,7 @@
                     <h3 class="word" id="home6" onclick="content6(event)">Community</h3>
                 </li>
                 <li id="button-app-4">
-                    <button class="button-Tweet">Post picture </button>
+                    <button class="button-Tweet" onclick="content4(event)">Post picture </button>
                 </li>
             </ul>
         </div>
@@ -41,13 +41,15 @@
             <div class="search">
                 <div class="search__wrapper">
                     <label for="iconsearch"><i class="fa-solid fa-magnifying-glass"></i></label> 
-                    <input type="text" placeholder="Search" class="searchform" id="iconsearch">
+                    <input type="text" placeholder="Find User" class="searchform" id="iconsearch" onkeyup='hell(event)'>
+                    <div class="user-list">
+                    </div>
                 </div>
                 <div class="tweetBox">
                     <form action="">
                         <div class="tweetBox__input">
                             <img src="/pic/facebook-cap-nhat-avatar-doi-voi-tai-khoan-khong-su-dung-anh-dai-dien-e4abd14d.jpg" alt="">
-                            <input type="text" placeholder="What's happening?">
+                            <input type="text" placeholder="What's up">
                         </div>
                         <button class="tweetBox__button">Tweet</button>
                         <div>
@@ -123,6 +125,22 @@
                 </div>   
             </div>
         </div>   
+        <div class="post-container"  style="display: none;">
+            <div class="header">
+                <h1>Make post picture</h1>
+                <button class="tick4"><i class="fa-solid fa-xmark close-icon"></i></button>
+            </div>
+            <div class="content">
+                <img src="" alt="" >
+            </div>
+            <div class="actions">
+                <button class="feed-button">Feed</button>
+                <input type="file" name="myFile" style="display:none" id="inputCoverfeed" accept=".png,.jpg,.jpeg"/>
+                <label for="inputCover" class="image-icon">
+                    <button onclick="feedPicture()" class="buttonPicture"><i class="fa-solid fa-image" ></i></button>
+                </label>
+            </div>
+        </div>
         <div class="changePassword" style="display:none">
             <div class="subscribe">
                 <p>Change Password</p>

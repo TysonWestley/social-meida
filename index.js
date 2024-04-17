@@ -1,5 +1,4 @@
 const express = require("express");
-//tương tác cơ sở dữ liệu với prisma
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const app = express();
@@ -7,7 +6,6 @@ const multer = require("multer");
 const NodeRSA = require('node-rsa');
 const fs = require('fs');
 const { Server } = require("socket.io");
-// Load the keys from files
 const privateKeyPem = fs.readFileSync('private.pem', 'utf8');
 const publicKeyPem = fs.readFileSync('public.pem', 'utf8');
 
@@ -19,11 +17,6 @@ app.use(
     extended: true,
   })
 );
-// const text = 'Hello RSA!';
-// const encrypted = key.encrypt(text, 'base64');
-// console.log('encrypted: ', encrypted);
-// const decrypted = key.decrypt(encrypted, 'utf8');
-// console.log('decrypted: ', decrypted);
 var server = require("http").Server(app);
 const io = new Server(server, {});
 io.on("connection", (client) => {
@@ -83,26 +76,29 @@ app.post("/api/register", async (req, res) => {
   res.status(200).send("OK");
 });
 app.post("/api/login", async (req, res) => {
-  const body = req.body;
-  const email = body.email;
-  const password = body.password;
-  // console.log(body);
+  const { email, password } = req.body;
   if (!password || !email) {
-    res.status(400).send("wrong cú pháp");
+    res.status(400).send("Wrong syntax");
     return;
   }
   const record = await prisma.users.findUnique({
     where: {
-      email: email,
-      password: password,
+      email,
+    },
+    select: {
+      password: true,
     },
   });
   if (!record) {
-    res.status(404).send("not found");
+    res.status(404).send("User not found");
+    return;
+  }
+  if (record.password !== password) {
+    res.status(404).send("Wrong password");
     return;
   }
   const tokenString = `${email};${password}`;
-  const encrypted =  publicKey.encrypt(tokenString, "base64");
+  const encrypted = publicKey.encrypt(tokenString, "base64");
   res.status(200).send(encrypted);
 });
 
@@ -355,27 +351,6 @@ app.get("/api/searchUser", async (req, res) => {
     res.status(500).json({ message: "Lỗi khi tìm kiếm người dùng" });
   }
 });
-//feed post
-// app.post("/api/post", async (req, res) => {
-//   const { content, username } = req.body;
-
-//   try {
-//     // Lưu thông tin bài viết vào cơ sở dữ liệu
-//     const newPost = await prisma.posts.create({
-//       data: {
-//         content: content,
-//         username: username, 
-//       },
-//     });
-
-//     res.status(201).json(newPost);
-//   } catch (error) {
-//     console.error("Lỗi khi đăng bài viết:", error);
-//     res.status(500).json({ message: "Lỗi khi đăng bài viết" });
-//   }
-// });
-
-//feed word
 app.post("/create_feeds", async (req, res) => {
   const token = req.query.token;
   if (!token) {
@@ -427,6 +402,68 @@ app.post("/create_feeds", async (req, res) => {
 app.get("/feeds", async (req, res) => {
   try {
       const feeds = await prisma.feeds.findMany();
+      res.status(200).json(feeds);
+  } catch (error) {
+      console.error('Error fetching feeds:', error);
+      res.status(500).json({ error: 'Internal server error' });
+  }
+});
+app.post("/create_feedPictures", upload.single("picture"), async (req, res) => {
+  const token = req.query.token;
+  console.log(token);
+  if (!token) {
+    return res.status(401).send('Token missing');
+  }
+
+  try {
+    const decrypted = privateKey.decrypt(token, 'utf8');
+    const img = fs.readFileSync(req.file.path);
+    const encode_image = img.toString("base64");
+    const finalImg = {
+      contentType: req.file.mimetype,
+      image: Buffer.from(encode_image, "base64"),
+    };
+    const parts = decrypted.split(';');
+    const email = parts[0];
+    const password = parts[1];
+    console.log(password);
+    const user = await prisma.users.findUnique({
+      where: { email: email },
+      select: { email: true, username: true, password: true }
+    });
+
+    if (!user) {
+      return res.status(401).send('Unauthorized');
+    }
+
+    if (user.password !== password) {
+      return res.status(401).send('Unauthorized');
+    }
+    const record1=await prisma.images.findUnique({
+      where:{
+        username:user.username
+      },
+      select:{
+        image:true
+      }
+    })
+    await prisma.feedPictures.create({
+      data: {
+        image: record1.image,
+        picture: finalImg.image.toString('base64'),
+        username: user.username
+      }
+    });
+    console.log(finalImg);
+    return res.status(200).send("Upload successful");
+  } catch (error) {
+    console.error('Error during decryption:', error);
+    return res.status(500).send('Error during decryption: ' + error.message);
+  }
+});
+app.get("/feedPictures", async (req, res) => {
+  try {
+      const feeds = await prisma.feedPictures.findMany();
       res.status(200).json(feeds);
   } catch (error) {
       console.error('Error fetching feeds:', error);

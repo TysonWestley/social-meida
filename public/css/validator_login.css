@@ -142,7 +142,7 @@ body{
     border-radius: 10px;
     background: linear-gradient(320deg, rgba(0, 140, 255, 0.678), rgba(128, 0, 128, 0.308));
     z-index: 1;
-    transition: background 3s;
+    transition:  3s;
 }
 .sign_in:hover::before ,.Log_in:hover::before{
     animation: rotate 1s;
@@ -157,6 +157,9 @@ body{
       transform: rotateY(360deg);
     }
   }
+.invalid {
+    COLOR: #f33a58;
+}
 .invalid input{
     border:3px solid #f33a58;
     transition: 1s all;

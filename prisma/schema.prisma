@@ -7,11 +7,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model feedPictures {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  image    String
+  picture  String
+  username String 
+}
+
 model feeds {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
   content  String
   image    String
-  username String
+  username String 
 }
 
 model imageAvartars {
