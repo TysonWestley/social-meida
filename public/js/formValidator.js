@@ -111,6 +111,8 @@ const signUp = (e) => {
         checkIcon.addEventListener('click', (e) => {
             e.preventDefault();
             showNotification.style.display = 'none';
+            loginForm.style.display='block'
+            form.style.display='none'
         })
         return res.text();
     }
@@ -141,12 +143,8 @@ const loginUp = () => {
     })
       .then((res) => {
         if (!res.ok) {
-          model.innerText = 'Registration Error';
-          showNotification.style.display = 'block';
-          checkIcon.addEventListener('click', (e) => {
-            e.preventDefault();
-            showNotification.style.display = 'none';
-        })
+          const loginError=document.querySelector('.loginError')
+          loginError.innerHTML='Wrong email or password'
           throw new Error("Lỗi đăng nhập");
         }
         return res.text();
@@ -178,6 +176,5 @@ form.addEventListener('submit', function (e) {
 
 loginForm.addEventListener('submit',(e)=>{
   e.preventDefault();
-  console.log('xoo')
   loginUp()
 })

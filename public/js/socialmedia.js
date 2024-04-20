@@ -6,7 +6,7 @@ const changePassword=document.querySelector('.changePassword')
 const CommunityChat=document.querySelector('.CommunityChat') 
 const postcontent=document.querySelector('.post-container')
 const tick4=document.querySelector('.tick4')
-console.log(tick4)
+const changetheme=document.querySelector('.changeTheme')
 const changepass=(e)=>{
   e.preventDefault()
   changePassword.style.display='flex'
@@ -62,6 +62,10 @@ const content6=(e)=>{
   messageContent.style.display='none'
   profileContent.style.display = 'none';
 }
+const changeTheme=(e)=>{
+  e.preventDefault();
+  changetheme.classList.add='lighttheme'
+}
 //js flashcard
 const content = document.querySelector(".content");
 const addQuestionCard = document.getElementById("add-question-card");
@@ -95,8 +99,8 @@ closeBtn.addEventListener("click",(hidenQuestion = () => {
 //Submit Question
 cardButton.addEventListener("click",(submitQuestion = () => {
     editBool = false;
-    tempQuestion = question.value.trim();
-    tempAnswer = answer.value.trim();
+    let tempQuestion = question.value.trim();
+    let tempAnswer = answer.value.trim();
     if (!tempQuestion || !tempAnswer) {
       errorMessage.classList.remove("hide");
     } else {
@@ -114,14 +118,10 @@ function viewlist() {
   var listCard = document.getElementsByClassName("card-list-container");
   var div = document.createElement("div");
   div.classList.add("card");
-  //Question
   div.innerHTML += `<p class="question-div">${question.value}</p>`;
-  //Answer
   var displayAnswer = document.createElement("p");
   displayAnswer.classList.add("answer-div", "hide");
   displayAnswer.innerText = answer.value;
-
-  //Link to show/hide answer
   var link = document.createElement("a");
   link.setAttribute("href", "#");
   link.setAttribute("class", "show-hide-btn");
@@ -133,7 +133,6 @@ function viewlist() {
   div.appendChild(link);
   div.appendChild(displayAnswer);
 
-  //Edit button
   let buttonsCon = document.createElement("div");
   buttonsCon.classList.add("buttons-con");
   var editButton = document.createElement("button");
@@ -158,7 +157,6 @@ function viewlist() {
 
   div.appendChild(buttonsCon);
   listCard[0].appendChild(div);
-  hideQuestion();
 }
 
 //Modify Elements
@@ -216,7 +214,7 @@ let dislike=localStorage.getItem('dislikecount')||0;
 const follow=(e)=>{
   e.preventDefault();
   const follows=document.querySelector('.user-plus .followButton')
-  follows.innerHTML ='followed';
+  follows.textContent  ='followed';
 }
 function loveButton(event) {
   event.preventDefault();
@@ -253,31 +251,37 @@ const dislikeButton = (e) => {
 function createFeed(e) {
   e.preventDefault();
   const token = localStorage.getItem('token');
-  const content = document.querySelector('.tweetBox__input input').value; 
-  if(content){
+  if (!token) {
+    console.error('Không có token trong localStorage');
+    return;
+  }
+  const input = document.querySelector('.tweetBox__input input');
+  const content = input.value;
+  if (content) {
     fetch(`/create_feeds?token=${encodeURIComponent(token)}`, {
       method: "POST",
       headers: {
-          'Content-Type': 'application/json' 
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-          content: content 
+        content: content
       })
-  }).then(res => {
+    }).then(res => {
       if (!res.ok) {
-          throw new Error('Network response was not ok');
+        throw new Error('Network response was not ok');
       }
       return res.json();
-  }).then(data => {
-       console.log(data)
-  }).catch(error => {
+    }).then(data => {
+      showFeeds();
+      input.value = ""; 
+      console.log(data);
+    }).catch(error => {
       console.error('There was a problem with the fetch operation:', error);
-  });
+      console.error(error.stack);
+    });
   }
-
 }
-async function showFeeds(e) {
-  e.preventDefault();
+async function showFeeds() {
   try {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -319,12 +323,11 @@ async function showFeeds(e) {
     console.error('Error:', error);
   }
 }
-document.querySelector('.tweetBox__button').addEventListener('click', async (e) => {
-  e.preventDefault();
+document.querySelector('.tweetBox__button').addEventListener('click', async (event) => {
+  event.preventDefault();
   
   try {
-    await createFeed(e);
-    showFeeds(e);
+    await createFeed(event);
   } catch (error) {
     console.error('Error creating or showing feeds:', error);
   }
@@ -507,7 +510,7 @@ const hell = async (e) => {
     if (!response.ok) {
       const itemsHtml = `
       <div>
-        <i class="fa-solid fa-xmark"  id="tick" onclick="tick(event)"></i>
+        <i class="fa-solid fa-xmark"  id="tickNone" onclick="tickNone(event)"></i>
         <h1>Error to find user</h1>
       </div>
     `;
@@ -516,15 +519,19 @@ const hell = async (e) => {
     }
     displayUserProfile(data);
     const itemsHtml = `
-      <div>
-        <i class="fa-solid fa-xmark"  id="tick" onclick="tick(event)"></i>
+      <div class='userProfileFound'>
+        <i class="fa-solid fa-xmark"  id="tickNone"></i>
         <h1>Information User</h1>
         <img src="data:image/gif;base64, ${data.image}"/>
         <img src="data:image/gif;base64, ${data.userAvartar}"/>
         <h3>${data.username}</h3>
       </div>
-    `;
+    `
+;
     userList.innerHTML = itemsHtml;
+    document.querySelector('#tickNone').addEventListener('click', () => {
+      document.querySelector('.userProfileFound').style.display = 'none';
+    });
   } catch (error) {
     console.error(`Error sending user search request: ${error}`);
   }
@@ -536,10 +543,12 @@ function displayUserProfile(user) {
 const feedPicture = async () => {
   const inputCoverfeed = document.querySelector('#inputCoverfeed');
   const imgAvartar = document.querySelector(".content img");
-  const feedButton=document.querySelector('.buttonPicture')
-  feedButton.addEventListener('click',()=>{
-    inputCoverfeed.click();
-  })
+  const feedButton = document.querySelector('.buttonPicture');
+
+  feedButton.addEventListener('click', () => {
+    inputCoverfeed.click(); 
+  });
+
   inputCoverfeed.addEventListener('change', async () => {
     const formData = new FormData();
     formData.append('picture', inputCoverfeed.files[0]);
@@ -561,8 +570,10 @@ const feedPicture = async () => {
       imgAvartar.src = event.target.result;
     };
     reader.readAsDataURL(inputCoverfeed.files[0]);
+    
   });
 }
+feedPicture()
 async function uploadFeed(e) {
   e.preventDefault();
   try {
@@ -655,7 +666,7 @@ document.addEventListener('DOMContentLoaded', loadAndDisplayPicture);
 document.querySelector('.feed-button').addEventListener('click', async (event) => {
   event.preventDefault();
   try {
-    await feedPicture(event);
+    await feedPicture();
     uploadFeed(event);
   } catch (error) {
     console.error('Error creating or showing feeds:', error);

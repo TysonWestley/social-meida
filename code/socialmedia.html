@@ -5,10 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/css/socialmedia.css">
+    <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
     <div class="social-app">
+        <div class="background">
+            <section class="wrapper">
+                <div id="stars"></div>
+                <div id="stars2"></div>
+                <div id="stars3"></div>
+                <div id="title">
+                </div>
+            </section>  
+        </div>
         <div class="navbar">
             <h1 id="icon">UniNet</h1>
             <ul class="btn">
@@ -120,6 +130,7 @@
                         <div class="dropdown-content">
                             <a  class="changePass" onclick="changepass(event)">Change Password </a>
                             <a href="/validator">Log Out</a>
+                            <a class="changeTheme" onclick="changeTheme(event)">Change Theme</a>
                        </div>
                     </div>
                 </div>   
@@ -137,7 +148,7 @@
                 <button class="feed-button">Feed</button>
                 <input type="file" name="myFile" style="display:none" id="inputCoverfeed" accept=".png,.jpg,.jpeg"/>
                 <label for="inputCover" class="image-icon">
-                    <button onclick="feedPicture()" class="buttonPicture"><i class="fa-solid fa-image" ></i></button>
+                    <button class="buttonPicture"><i class="fa-solid fa-image" ></i></button>
                 </label>
             </div>
         </div>
@@ -150,7 +161,7 @@
                 <div class="submit-btn" onclick="changePasswordApi(event)">SUBMIT</div>
                 <span class="NotificationOl"></span>
             </div>               
-        </div>     
+        </div>    
         <div class="messengerButton">
             <div class="boxMessenger">
                 <div class="userMessenger">
@@ -171,7 +182,7 @@
                 <div class="userMessenger">
                     <h1>Welcome to community chat</h1>
                 </div>
-                <ul id="messengerComunity"></ul>
+                <ul id="messengerCommunity"></ul>
                 <form action="" id="chatformAll2">
                     <input type="text" id="chat-mess-comunity">
                     <button id="send-chat-comunity">send</button>
@@ -181,12 +192,12 @@
         <div class="Profile" style="display:none">
             <div class="cover">
                 <input type="file" name="myFile" style="display:none" id="inputCover" accept=".png,.jpg,.jpeg"/>
-                <img class="imgprofile" onclick="uploadAvartar()" src="/pic/431556223_1486704845588291_4700545716883084251_n.png" alt="">
+                <img class="imgprofile" onclick="uploadAvartar()"  src="/pic/facebook-cap-nhat-avatar-doi-voi-tai-khoan-khong-su-dung-anh-dai-dien-e4abd14d.jpg" alt="">
             </div>
             <div class="id-section">
                 <div class="circle">
                     <input type="file" name="myFile" style="display:none" id="inputImg" accept=".png,.jpg,.jpeg"/>
-                    <img src="/pic/431556223_1486704845588291_4700545716883084251_n.png" class="logo" onclick="imgUpload()">                   
+                    <img src="/pic/facebook-cap-nhat-avatar-doi-voi-tai-khoan-khong-su-dung-anh-dai-dien-e4abd14d.jpg" class="logo" onclick="imgUpload()">                   
                 </div>
                 <div class="id">
                     <h1 class="user-id">Tyson Westley</h1>
@@ -209,20 +220,16 @@
                 <div class="add-flashcard-con">
                   <button id="add-flashcard">Add Flashcard</button>
                 </div>
-                <!-- Display Card of Question And Answers Here -->
                 <div id="card-con">
                   <div class="card-list-container"></div>
                 </div>
               </div>
-              <!-- Input form for users to fill question and answer -->
               <div class="question-container hide" id="add-question-card">
                 <h2>Add Flashcard</h2>
                 <div class="wrapper">
-                  <!-- Error message -->
                   <div class="error-con">
                     <span class="hide" id="error">Input fields cannot be empty!</span>
                   </div>
-                  <!-- Close Button -->
                   <i class="fa-solid fa-xmark" id="close-btn"></i>
                 </div>
                 <label for="question">Question:</label>
@@ -250,23 +257,72 @@
         const name = document.querySelector('#usernameDisplay');
         const chatForm = document.querySelector("#chatformAll2");
         const chatMes = document.querySelector("#chat-mess-comunity");
-        const messengerList = document.querySelector("#messengerComunity");
+        const messengerList = document.querySelector("#messengerCommunity");
         socket.on('messenger', data => {
            const li = document.createElement("li");
            li.innerText = `${data.name}: ${data.messenger}`;
            messengerList.appendChild(li);
+           const user = {
+             username: data.name,
+             content: data.messenger,
+            };
+            const json=JSON.stringify(user)
+           fetch("/create_messenges", {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json",
+            },
+            body: json,
+        })
+        .then(res=>{
+            return res.text();
+        })
+        .catch(error=>{
+            console.log(error)
+        })
         });
 
         chatForm.addEventListener("submit", (e) => {
             e.preventDefault();
             const messenger = chatMes.value;
-            const messengerData = {
-            name: name.textContent,
-            messenger: messenger
-        };
-            socket.emit('hello', messengerData);
-            chatMes.value = "";
+            if(messenger!=""){
+                const messengerData = {
+                name: name.textContent,
+                messenger: messenger
+                  };
+                socket.emit('hello', messengerData);
+                const li = document.createElement("li");
+                li.classList.add("MesengerList")
+                li.innerText = `${name.textContent}: ${messenger}`;
+                messengerList.appendChild(li);
+                chatMes.value= "";
+
+            }
         });
+         document.addEventListener("DOMContentLoaded", async () => {
+
+            try {
+                const response = await fetch(`/messages`, {
+                    method: 'GET',
+                });
+                if (!response.ok) {
+                    console.error(`Fetch request failed with status: ${response.status}`);
+                    return;
+                }
+
+                const data = await response.json();
+                console.log(data)
+                data.forEach(element => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <h1 class="MesengerList">${element.username}:${element.content}</h1>
+                    `
+                    messengerList.appendChild(li);
+                } ) 
+            } catch (error) {
+                console.error('Error fetching data:', error);
+        }
+});
     </script>
 </body>
 </html>

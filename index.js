@@ -389,7 +389,7 @@ app.post("/create_feeds", async (req, res) => {
       data: {
           username: user.username, 
           content: content,
-          image:record.image
+          image:record.image,
       }
     });
 
@@ -399,6 +399,32 @@ app.post("/create_feeds", async (req, res) => {
     res.status(500).send('An error occurred while processing your request');
   }
 });
+// app.post("/like",async(req,res)=>{
+//   const token=req.query.token
+//   if(!token){
+//     return res.status(401).send('token missing')
+//   }
+//   try {
+//     const decrypted = privateKey.decrypt(token, 'utf8');
+//     const parts = decrypted.split(';');
+//     const email = parts[0];
+//     const password = parts[1];
+//     const user = await prisma.users.findUnique({
+//       where: {
+//         email: email,
+//       },
+//       select: {
+//         username: true,
+//       },
+//     });
+
+//     res.status(200).json({ username: user.username ,content:content,image:record.image});
+//   } catch (error) {
+//     console.error('An error occurred:', error);
+//     res.status(500).send('An error occurred while processing your request');
+//   }
+//       console.log(error)
+//   })
 app.get("/feeds", async (req, res) => {
   try {
       const feeds = await prisma.feeds.findMany();
@@ -508,6 +534,39 @@ app.put ('/api/change-password', async (req, res) => {
   } catch (error) {
     console.error('Error occurred while changing password:', error);
     return res.status(500).json({ error: 'An error occurred while changing password' });
+  }
+});
+app.post('/create_messenges', async (req, res) => {
+  try {
+    const { username, content } = req.body;
+    if(content!=''){
+      await prisma.messeger.create({
+        data: {
+          username: username,
+          content: content,
+        }
+      });
+      res.status(201).json({ message: 'Message created' });
+    }
+
+    } catch (error) {
+    console.error('An error occurred:', error);
+    res.status(500).json({ error: 'An error occurred while creating message' });
+  }
+});
+app.get('/messages', async (req, res) => {
+  try {
+      const messages = await prisma.messeger.findMany();
+
+      if (messages.length === 0) {
+          res.status(204).end(); 
+          return;
+      }
+
+      res.status(200).json(messages);
+  } catch (error) {
+      console.error('Error fetching messages:', error);
+      res.status(500).json({ error: 'Internal server error' });
   }
 });
 

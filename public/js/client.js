@@ -23,25 +23,31 @@ btnJoin.addEventListener('click', (e) => {
     }
     else{
         check=false
-        span.innerHTML='Can not be empty'
+        span.innerHTML='Can not be empty '
     }
 });
 
 sendChat.addEventListener('click', (e) => {
     e.preventDefault();
-    if(check){
-        const message = chatMess.value;
-        socket.emit('message',username.textContent +':' +message);
-        span.innerHTML=''
+    if(chatMess.value!=''){
+        if(check){
+            const message = chatMess.value;
+            socket.emit('message',username.textContent +':' +message);
+            span.innerHTML=''
+        }
+        else{
+            span.innerHTML='Please join room first'
+        }
     }
     else{
-        span.innerHTML='Please join room first'
+        span.innerHTML='';
+        span.innerHTML=`can not be empty messenge`
     }
+    chatMess.value='';
 });
 
 socket.on('thread', (data) => {
     const li = document.createElement('li');
     li.innerHTML = data;
     messengerUl.appendChild(li);
-    console.log(messengerUl)
 });
