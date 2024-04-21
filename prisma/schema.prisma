@@ -42,5 +42,4 @@ model users {
   email    String  @unique
   password String
   username String  @unique
-  image    String  @default("/pic/facebook-cap-nhat-avatar-doi-voi-tai-khoan-khong-su-dung-anh-dai-dien-e4abd14d.jpg")
 }

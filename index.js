@@ -399,32 +399,6 @@ app.post("/create_feeds", async (req, res) => {
     res.status(500).send('An error occurred while processing your request');
   }
 });
-// app.post("/like",async(req,res)=>{
-//   const token=req.query.token
-//   if(!token){
-//     return res.status(401).send('token missing')
-//   }
-//   try {
-//     const decrypted = privateKey.decrypt(token, 'utf8');
-//     const parts = decrypted.split(';');
-//     const email = parts[0];
-//     const password = parts[1];
-//     const user = await prisma.users.findUnique({
-//       where: {
-//         email: email,
-//       },
-//       select: {
-//         username: true,
-//       },
-//     });
-
-//     res.status(200).json({ username: user.username ,content:content,image:record.image});
-//   } catch (error) {
-//     console.error('An error occurred:', error);
-//     res.status(500).send('An error occurred while processing your request');
-//   }
-//       console.log(error)
-//   })
 app.get("/feeds", async (req, res) => {
   try {
       const feeds = await prisma.feeds.findMany();

@@ -31,6 +31,12 @@ const content2=(e)=>{
     flashContent.style.display='none'
     CommunityChat.style.display='none'
 }
+// // TODO Testing purpose
+// content2({
+//   preventDefault: () => {},
+// })
+
+
 const content3=(e)=>{
     e.preventDefault()
     homeContent.style.display='none'

@@ -29,7 +29,6 @@ function showError(input, message) {
   parent.classList.add("invalid");
   error.innerText = message;
 }
-
 function showSuccess(input) {
   let parent =input.parentElement
   let error = parent.querySelector('span');
@@ -47,7 +46,7 @@ const checkEmptyInvalid = (inputList) => {
     } else {
         showSuccess(input);
       }
-  });
+});
   return isEmptyError
 }
 const checkEmail = (input) => {
