@@ -515,8 +515,8 @@ const hell = async (e) => {
     const userList = document.querySelector('.user-list');
     if (!response.ok) {
       const itemsHtml = `
-      <div>
-        <i class="fa-solid fa-xmark"  id="tickNone" onclick="tickNone(event)"></i>
+      <div class='userProfileFound'>
+        <i class="fa-solid fa-xmark"  id="tickNone"></i>
         <h1>Error to find user</h1>
       </div>
     `;
@@ -536,7 +536,8 @@ const hell = async (e) => {
 ;
     userList.innerHTML = itemsHtml;
     document.querySelector('#tickNone').addEventListener('click', () => {
-      document.querySelector('.userProfileFound').style.display = 'none';
+      const userProfileFound = document.querySelector('.userProfileFound');
+      userProfileFound.style.display = 'none';
     });
   } catch (error) {
     console.error(`Error sending user search request: ${error}`);

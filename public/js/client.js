@@ -20,6 +20,9 @@ btnJoin.addEventListener('click', (e) => {
         check=true
         span.innerHTML=""
         sucess.innerHTML='Successfully Join Room'
+        while (messengerUl.firstChild) {
+            messengerUl.removeChild(messengerUl.firstChild);
+        }
     }
     else{
         check=false

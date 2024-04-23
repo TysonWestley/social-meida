@@ -4,11 +4,12 @@ const prisma = new PrismaClient();
 const app = express();
 const multer = require("multer");
 const NodeRSA = require('node-rsa');
+//làm việc vơới file system
 const fs = require('fs');
 const { Server } = require("socket.io");
+//đọc nội dung của file 'private.pem' và lưu vào biến privateKeyPem dưới dạng UTF-8.
 const privateKeyPem = fs.readFileSync('private.pem', 'utf8');
 const publicKeyPem = fs.readFileSync('public.pem', 'utf8');
-
 const privateKey = new NodeRSA(privateKeyPem, 'pkcs1-private');
 const publicKey = new NodeRSA(publicKeyPem, 'pkcs8-public');
 app.use(express.json());
@@ -104,7 +105,6 @@ app.post("/api/login", async (req, res) => {
 
 app.post("/uploadphoto", upload.single("picture"), async (req, res) => {
   const token = req.query.token;
-  console.log(token)
   if (!token) {
     return res.status(401).send('Token missing');
   }
