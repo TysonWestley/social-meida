@@ -38,13 +38,13 @@ io.on("connection", (socket) => {
   });
 });
 app.use(express.static("public"));
-app.get("/socialmedia", (req, rep) => {
+app.get("/", (req, rep) => {
   rep.sendFile(__dirname + "/code/socialmedia.html");
 });
-app.get("/", (req, rep) => {
+app.get("/validator", (req, rep) => {
   rep.sendFile(__dirname + "/code/validator.html");
 });
-app.get("/messenger", function (req, res) {
+app.get("/", function (req, res) {
   res.sendFile(__dirname + "/socialmedia.html");
 });
 var storage = multer.diskStorage({
