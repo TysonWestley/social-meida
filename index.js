@@ -38,10 +38,10 @@ io.on("connection", (socket) => {
   });
 });
 app.use(express.static("public"));
-app.get("/", (req, rep) => {
+app.get("/socialmedia", (req, rep) => {
   rep.sendFile(__dirname + "/code/socialmedia.html");
 });
-app.get("/validator", (req, rep) => {
+app.get("/", (req, rep) => {
   rep.sendFile(__dirname + "/code/validator.html");
 });
 app.get("/messenger", function (req, res) {
@@ -470,7 +470,6 @@ app.get("/feedPictures", async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
   }
 });
-//change password
 app.put ('/api/change-password', async (req, res) => {
   const token = req.query.token;
   if (!token) {

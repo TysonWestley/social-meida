@@ -64,57 +64,6 @@
                         <button class="tweetBox__button">Tweet</button>
                         <div>
                             <ul class="post">
-                                <li>
-                                    <div class="Userthis">
-                                        <img class="postUser" src="/pic/facebook-cap-nhat-avatar-doi-voi-tai-khoan-khong-su-dung-anh-dai-dien-e4abd14d.jpg" alt="">
-                                        <h3 class="postname">NameUser</h3>
-                                    </div>
-                                    <img class="postpic"src="/pic/anh-dep-hinh-nen-thien-nhien-2.jpg" alt="">
-                                    <div class="postIcon">
-                                        <div>
-                                            <i class="fa-regular fa-heart iconC" onclick="loveButton(event)"></i>
-                                            <span class="numberIcon">0</span>
-                                        </div>
-                                        <div>
-                                            <i class="fa-solid fa-thumbs-down iconC" onclick="dislikeButton(event)"></i>
-                                            <span class="dislike">0</span>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="Userthis">
-                                        <img class="postUser" src="/pic/facebook-cap-nhat-avatar-doi-voi-tai-khoan-khong-su-dung-anh-dai-dien-e4abd14d.jpg" alt="">
-                                        <h3 class="postname">NameUser</h3>
-                                    </div>
-                                    <img class="postpic" src="/pic/anh-dep-hinh-nen-thien-nhien-2.jpg" alt="">
-                                    <div class="postIcon">
-                                        <div>
-                                            <i class="fa-regular fa-heart iconC" onclick="loveButton(event)"></i>
-                                            <span class="numberIcon">0</span>
-                                        </div>
-                                        <div>
-                                            <i class="fa-solid fa-thumbs-down iconC" onclick="dislikeButton(event)"></i>
-                                            <span class="dislike">0</span>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="Userthis">
-                                        <img class="postUser" src="/pic/facebook-cap-nhat-avatar-doi-voi-tai-khoan-khong-su-dung-anh-dai-dien-e4abd14d.jpg" alt="">
-                                        <h3 class="postname">NameUser</h3>
-                                    </div>
-                                    <img class="postpic" src="/pic/anh-dep-hinh-nen-thien-nhien-2.jpg" alt="">
-                                    <div class="postIcon">
-                                        <div>
-                                            <i class="fa-regular fa-heart iconC" onclick="loveButton(event)"></i>
-                                            <span class="numberIcon">0</span>
-                                        </div>
-                                        <div>
-                                            <i class="fa-solid fa-thumbs-down iconC" onclick="dislikeButton(event)"></i>
-                                            <span class="dislike">0</span>
-                                        </div>
-                                    </div>
-                                </li>
                             </ul>    
                         </div> 
                     </form>
@@ -260,7 +209,6 @@
         const messengerList = document.querySelector("#messengerCommunity");
         socket.on('messenger', data => {
            const li = document.createElement("li");
-           li.innerText = `${data.name}: ${data.messenger}`;
            messengerList.appendChild(li);
            const user = {
              username: data.name,

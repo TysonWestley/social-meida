@@ -6,23 +6,19 @@ datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
-model messeger{
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  username String
-  content  String
-}
+
 model feedPictures {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
   image    String
   picture  String
-  username String 
+  username String
 }
 
 model feeds {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
   content  String
   image    String
-  username String 
+  username String
 }
 
 model imageAvartars {
@@ -37,9 +33,15 @@ model images {
   username String @unique
 }
 
+model messeger {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  content  String
+  username String
+}
+
 model users {
-  id       String  @id @default(auto()) @map("_id") @db.ObjectId
-  email    String  @unique
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  email    String @unique
   password String
-  username String  @unique
+  username String @unique
 }

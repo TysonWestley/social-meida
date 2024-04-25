@@ -219,7 +219,8 @@ let loveCount = localStorage.getItem('loveCount') || 0;
 let dislike=localStorage.getItem('dislikecount')||0;
 const follow=(e)=>{
   e.preventDefault();
-  const follows=document.querySelector('.user-plus .followButton')
+  const follows=document.querySelector('.user-plus')
+  follows.textContent="";
   follows.textContent  ='followed';
 }
 function loveButton(event) {
